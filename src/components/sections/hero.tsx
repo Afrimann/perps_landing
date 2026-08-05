@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
+import { photos } from "@/content/photos";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
 import { MaskedLines } from "@/components/motion/primitives";
@@ -25,6 +27,21 @@ export function Hero() {
       ref={ref}
       className="grain relative flex min-h-[92svh] items-center overflow-hidden bg-ink-950"
     >
+      {/* Real photograph behind the headline, held well back so the type
+          stays the subject. Priority: it is the LCP element. */}
+      <div aria-hidden="true" className="absolute inset-0">
+        <Image
+          src={photos.streetCelebration.src}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="scale-105 object-cover object-[center_35%] opacity-45"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/70" />
+      </div>
+
       {/* Two slow brass washes, counter-drifting. Decorative. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <div

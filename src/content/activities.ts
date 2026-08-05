@@ -1,26 +1,34 @@
 /**
  * Activity reports — the evidence layer.
  *
- * ⚠️  EVERY ENTRY BELOW IS A STRUCTURAL PLACEHOLDER (`verified: false`).
- *     The dates, places, figures and quotes are invented to demonstrate the
- *     template. They must be replaced with real reports before launch.
- *     While any entry is unverified the UI shows a provisional notice —
- *     see components/sections/impact.tsx and the story page.
+ * ─────────────────────────────────────────────────────────────────────────
+ *  STATUS OF EACH REPORT
  *
- * Bodies are STRUCTURED, not markdown strings. The reference site renders
- * raw `## ` into its page because it stores prose as markdown and misses a
- * parse; typed blocks make that class of bug impossible.
+ *  `verified: true`  — details confirmed against material the foundation
+ *                      supplied (e.g. its own event flyer). Photographs
+ *                      throughout are genuine images of the foundation's
+ *                      work.
  *
- * `image` is null throughout: no photography has been supplied. Cards fall
- * back to a generated brass/ink panel rather than borrowing stock imagery,
- * which would misrepresent the foundation's work.
+ *  `verified: false` — the photographs and description are real, but the
+ *                      DATE and LOCATION are not yet confirmed. These
+ *                      surfaces render an honest "date pending" state
+ *                      rather than a plausible-looking invention.
+ *
+ *  No report states a turnout, a beneficiary count or an outcome figure
+ *  that the foundation has not confirmed. Where such a figure belongs, the
+ *  text says it is pending instead of guessing.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Bodies are STRUCTURED blocks, not markdown strings. The reference site
+ * renders an unparsed `## ` onto its own page; a discriminated union makes
+ * that class of bug impossible.
  */
+import { photos, type Photo } from "./photos";
 
 export type ActivityCategory =
-  | "Outreach"
-  | "Youth Program"
-  | "Health"
-  | "Governance";
+  | "Schools & Youth"
+  | "Community Relief"
+  | "Elderly Support";
 
 export type Block =
   | { type: "lede"; text: string }
@@ -39,7 +47,9 @@ export type Activity = {
   location: string;
   readingMinutes: number;
   summary: string;
-  image: string | null;
+  cover: Photo;
+  images: Photo[];
+  /** False when the date/location still need confirming. */
   verified: boolean;
   body: Block[];
 };
@@ -48,164 +58,151 @@ export const impactSection = {
   eyebrow: "Measurable change",
   heading: "Our Impact So Far",
   intro:
-    "Every programme we run is written up: what we set out to do, what it cost, what changed, and what we learned. Dated, located, and open to scrutiny.",
+    "Every programme is written up: what we set out to do, who it reached, and what we learned. Dated, located, and open to scrutiny.",
 } as const;
 
-/** Pill colours for a DARK ground — used over the card's image panel. */
+/** Pill colours for a DARK ground — used over a card's image. */
 export const categoryTone: Record<ActivityCategory, string> = {
-  Outreach: "bg-brass-500/15 text-brass-300 ring-brass-500/30",
-  "Youth Program": "bg-sky-400/15 text-sky-300 ring-sky-400/30",
-  Health: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/30",
-  Governance: "bg-violet-400/15 text-violet-300 ring-violet-400/30",
+  "Schools & Youth": "bg-sky-400/20 text-sky-200 ring-sky-300/40",
+  "Community Relief": "bg-brass-500/20 text-brass-200 ring-brass-400/40",
+  "Elderly Support": "bg-emerald-400/20 text-emerald-200 ring-emerald-300/40",
 };
 
-/**
- * Pill colours for a LIGHT ground — the story page sets its title block on
- * ivory, where the dark-ground values above fall well below contrast.
- */
+/** Pill colours for a LIGHT ground — the story page title block on ivory. */
 export const categoryToneLight: Record<ActivityCategory, string> = {
-  Outreach: "bg-brass-200/50 text-brass-700 ring-brass-600/25",
-  "Youth Program": "bg-sky-100 text-sky-800 ring-sky-700/20",
-  Health: "bg-emerald-100 text-emerald-800 ring-emerald-700/20",
-  Governance: "bg-violet-100 text-violet-800 ring-violet-700/20",
+  "Schools & Youth": "bg-sky-100 text-sky-800 ring-sky-700/20",
+  "Community Relief": "bg-brass-200/50 text-brass-700 ring-brass-600/25",
+  "Elderly Support": "bg-emerald-100 text-emerald-800 ring-emerald-700/20",
 };
 
 export const activities: Activity[] = [
   {
-    slug: "school-outreach",
-    title: "School Outreach Programme",
-    category: "Outreach",
-    date: "Placeholder date",
-    dateISO: "2024-01-01",
-    location: "Location pending",
-    readingMinutes: 5,
+    slug: "six-secondary-schools-competition",
+    title: "6 Secondary Schools Competition",
+    category: "Schools & Youth",
+    /* VERIFIED — from the foundation's own event flyer. */
+    date: "9 November 2024",
+    dateISO: "2024-11-09",
+    location: "Yonwuren College Ugbuwangue, Warri, Delta State",
+    readingMinutes: 4,
     summary:
-      "Visiting schools to mentor students, provide learning materials, and show children a wider set of futures than the one in front of them.",
-    image: null,
+      "Six secondary schools brought together for a day of football, quiz, dance and pageantry — with ₦550,000 in prizes, awards and school items.",
+    cover: photos.footballTeam,
+    images: [photos.footballTeam, photos.schoolsFlyer, photos.teamPitch],
+    verified: true,
+    body: [
+      {
+        type: "lede",
+        text: "On Saturday 9 November 2024, Yonwuren Naj Foundation brought six secondary schools together at Yonwuren College Ugbuwangue in Warri, Delta State, for a full day of competition across sport, academics and the arts.",
+      },
+      { type: "heading", text: "Why a Competition" },
+      {
+        type: "paragraph",
+        text: "Prize money and a crowd do something a classroom cannot. A competition gives students a reason to prepare, a stage to be recognised on, and a memory of being taken seriously — and it reaches whole schools at once rather than one child at a time.",
+      },
+      { type: "heading", text: "The Categories" },
+      {
+        type: "stats",
+        items: [
+          { figure: "₦250,000", rest: "Football competition" },
+          { figure: "₦150,000", rest: "Quiz competition" },
+          { figure: "₦100,000", rest: "Beauty pageant" },
+          { figure: "₦50,000", rest: "Dance competition" },
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Alongside the prize categories, the day carried awards and a distribution of gifts and school items to participating students.",
+      },
+      { type: "heading", text: "Results and Turnout" },
+      {
+        type: "paragraph",
+        text: "Final standings, participant numbers and the schools represented are being compiled with the foundation and will be published here.",
+      },
+    ],
+  },
+  {
+    slug: "community-relief-outreach",
+    title: "Community Relief Outreach",
+    category: "Community Relief",
+    date: "Date pending confirmation",
+    dateISO: "2024-01-01",
+    location: "Delta State",
+    readingMinutes: 3,
+    summary:
+      "Food and essential provisions portioned, packed and distributed directly to families in market and street communities.",
+    cover: photos.marketHandover,
+    images: [
+      photos.foodPrep,
+      photos.marketHandover,
+      photos.truckBagsA,
+      photos.truckRice,
+      photos.streetCelebration,
+      photos.hallBriefing,
+    ],
     verified: false,
     body: [
       {
         type: "lede",
-        text: "This is a structural placeholder demonstrating the activity report template. Replace with a real outreach write-up.",
+        text: "The foundation's relief work reaches families where they already are — in markets, on residential streets, and in community halls — with provisions portioned and counted in advance.",
       },
-      { type: "heading", text: "The Need" },
-      {
-        type: "paragraph",
-        text: "Education remains the most reliable route out of poverty, yet many schools in low-income communities lack the basics — textbooks, stationery, and adequate learning environments. Beyond materials, students need people who can show them what is possible.",
-      },
-      { type: "heading", text: "Our Approach" },
+      { type: "heading", text: "How It Works" },
       {
         type: "list",
         items: [
           {
-            lead: "Motivational assemblies",
-            rest: "where members share their own routes into work and study",
+            lead: "Portioning first",
+            rest: "rice, pasta, tomato mix and seasoning are divided into individual family packs before anyone travels",
           },
           {
-            lead: "Career conversations",
-            rest: "exposing students to paths in technology, medicine, law and enterprise",
+            lead: "Distribution on site",
+            rest: "packs are taken by vehicle directly into the communities receiving them",
           },
           {
-            lead: "Learning materials",
-            rest: "notebooks, pens, mathematical sets and reading books",
-          },
-          {
-            lead: "Study-skills workshops",
-            rest: "on revision technique, time management and goal setting",
+            lead: "Named recipients",
+            rest: "provisions are handed over in person rather than left with an intermediary",
           },
         ],
       },
-      { type: "heading", text: "Impact and Results" },
+      { type: "heading", text: "Reach" },
       {
         type: "paragraph",
-        text: "Figures pending confirmation from the foundation. Real reach, distribution and follow-up numbers belong here — each one traceable to this programme.",
-      },
-      { type: "heading", text: "Looking Ahead" },
-      {
-        type: "paragraph",
-        text: "Where this programme goes next, and what the foundation learned that will change how it runs the next one.",
+        text: "The number of households reached and the dates of each outreach are being confirmed with the foundation and will be published here.",
       },
     ],
   },
   {
-    slug: "orphanage-visits",
-    title: "Orphanage Visits",
-    category: "Youth Program",
-    date: "Placeholder date",
+    slug: "elderly-citizens-outreach",
+    title: "Elderly Citizens Outreach",
+    category: "Elderly Support",
+    date: "Date pending confirmation",
     dateISO: "2024-01-02",
-    location: "Location pending",
-    readingMinutes: 4,
+    location: "Delta State",
+    readingMinutes: 3,
     summary:
-      "Spending time with children in residential care — games, gifts, and the sustained attention that short visits rarely provide.",
-    image: null,
-    verified: false,
-    body: [
-      {
-        type: "lede",
-        text: "This is a structural placeholder demonstrating the activity report template. Replace with a real visit write-up.",
-      },
-      { type: "heading", text: "The Need" },
-      {
-        type: "paragraph",
-        text: "Children in residential care receive a great deal of one-off attention around holidays and very little in between. Consistency, not generosity, is the scarce resource.",
-      },
-      { type: "heading", text: "Looking Ahead" },
-      {
-        type: "paragraph",
-        text: "How the foundation intends to turn visits into an ongoing relationship with each home.",
-      },
+      "Provisions, company and time with the elders of the community — delivered seated, in person, and without a queue at a gate.",
+    cover: photos.hallGroup,
+    images: [
+      photos.hallGroup,
+      photos.eldersReceiving,
+      photos.eldersAddress,
+      photos.eldersGathered,
     ],
-  },
-  {
-    slug: "health-outreach",
-    title: "Community Health Outreach",
-    category: "Health",
-    date: "Placeholder date",
-    dateISO: "2024-01-03",
-    location: "Location pending",
-    readingMinutes: 4,
-    summary:
-      "Screenings, wellness education and referrals for children and elders in communities without a nearby clinic.",
-    image: null,
     verified: false,
     body: [
       {
         type: "lede",
-        text: "This is a structural placeholder demonstrating the activity report template. Replace with a real outreach write-up.",
+        text: "Elderly members of the community are among the least reached by relief work and the least able to queue for it. The foundation's elder outreaches are run seated, unhurried, and with time set aside for conversation.",
       },
-      { type: "heading", text: "The Need" },
+      { type: "heading", text: "What Happens" },
       {
         type: "paragraph",
-        text: "Distance to the nearest clinic decides whether a treatable condition is treated. Outreach closes that distance for a day and identifies who needs following up.",
+        text: "Elders gather in a community hall, are addressed directly about what is being provided, and receive their provisions in their seats. The format is deliberate: it removes the scramble, and it treats people as guests rather than as a crowd to be managed.",
       },
-    ],
-  },
-  {
-    slug: "annual-review",
-    title: "Annual General Meeting",
-    category: "Governance",
-    date: "Placeholder date",
-    dateISO: "2024-01-04",
-    location: "Location pending",
-    readingMinutes: 6,
-    summary:
-      "The foundation's yearly governance gathering — reviewing the year's work, its finances, and setting the priorities that follow.",
-    image: null,
-    verified: false,
-    body: [
-      {
-        type: "lede",
-        text: "This is a structural placeholder demonstrating the activity report template. Replace with a real meeting record.",
-      },
-      { type: "heading", text: "Purpose of the Meeting" },
+      { type: "heading", text: "Reach" },
       {
         type: "paragraph",
-        text: "A structured platform for reviewing the year's achievements, assessing financial stewardship, addressing challenges and setting priorities for the year ahead.",
-      },
-      { type: "heading", text: "Why This Matters" },
-      {
-        type: "paragraph",
-        text: "Published governance records are what separate an organisation that can be funded from one that cannot. This page exists to be read by people deciding whether to trust the foundation with money.",
+        text: "The number of elders supported and the dates of each gathering are being confirmed with the foundation and will be published here.",
       },
     ],
   },

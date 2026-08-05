@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
@@ -133,11 +134,8 @@ export default async function ActivityPage({
 
       <main id="main">
         {/* Header image morphs from the card that was clicked. */}
-        <div className="relative">
-          <ActivityVisual
-            activity={activity}
-            className="h-[42vh] min-h-[280px] w-full lg:h-[52vh]"
-          />
+        <div className="relative h-[46vh] min-h-[300px] lg:h-[58vh]">
+          <ActivityVisual activity={activity} sizes="100vw" priority />
           <div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ivory to-transparent"
@@ -171,9 +169,10 @@ export default async function ActivityPage({
 
               {!activity.verified ? (
                 <p className="mt-10 rounded-xl border border-dashed border-stone-300 bg-white/60 px-5 py-4 text-sm leading-relaxed text-stone-500">
-                  This report is a structural placeholder. Its dates, locations,
-                  figures and quotations are not yet supplied by the foundation
-                  and must be replaced before publication.
+                  The photographs and description on this page are the
+                  foundation&rsquo;s own. The exact date, location and number of
+                  people reached are still being confirmed and will be
+                  published here once they are.
                 </p>
               ) : null}
 
@@ -184,6 +183,32 @@ export default async function ActivityPage({
                   </Reveal>
                 ))}
               </div>
+
+              {activity.images.length > 1 ? (
+                <section className="mt-16">
+                  <h2 className="font-display text-[1.5rem] text-stone-900">
+                    From the day
+                  </h2>
+                  <span className="mt-4 block h-px w-20 bg-gradient-to-r from-brass-500 to-transparent" />
+                  <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+                    {activity.images.map((photo) => (
+                      <li
+                        key={photo.src}
+                        className="overflow-hidden rounded-xl border border-stone-300/60 bg-white"
+                      >
+                        <Image
+                          src={photo.src}
+                          alt={photo.alt}
+                          width={photo.width}
+                          height={photo.height}
+                          sizes="(min-width: 640px) 34vw, 90vw"
+                          className="h-auto w-full object-cover"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
 
               <div className="mt-16 flex flex-wrap items-center justify-between gap-5 border-t border-stone-300/70 pt-8">
                 <Link

@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Pillars } from "@/components/sections/pillars";
 import { Impact } from "@/components/sections/impact";
+import { Gallery } from "@/components/sections/gallery";
 import { Purpose } from "@/components/sections/purpose";
 import { Governance } from "@/components/sections/governance";
 import { Give } from "@/components/sections/give";
@@ -27,6 +28,7 @@ export default function Home() {
         <About />
         <Pillars />
         <Impact />
+        <Gallery />
         <Purpose />
         <Governance />
         <Give />

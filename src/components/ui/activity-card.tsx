@@ -1,54 +1,49 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { categoryTone, type Activity } from "@/content/activities";
 
 /**
- * Visual panel for an activity. No photography has been supplied, so this
- * renders a generated brass/ink field keyed to the slug rather than stock
- * imagery — borrowed photos would misrepresent the foundation's work.
+ * The activity's cover photograph. Wrapped in ViewTransition so it morphs
+ * into the story page's header image on navigation rather than the pages
+ * swapping.
  *
- * Wrapped in ViewTransition so the panel morphs into the story page header
- * on navigation instead of the pages simply swapping.
+ * Fills its parent absolutely, so the CALLER must supply a positioned box
+ * with a resolved height (an aspect ratio or an explicit height). Do not
+ * pass positioning via `className`: `absolute` and `relative` both set
+ * `position`, Tailwind emits `relative` last, and the winner would collapse
+ * the fill image to zero height.
  */
 export function ActivityVisual({
   activity,
   className = "",
+  sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 90vw",
+  priority = false,
 }: {
   activity: Activity;
   className?: string;
+  sizes?: string;
+  priority?: boolean;
 }) {
-  const seed = activity.slug.length * 37;
-
   return (
     <ViewTransition name={`activity-${activity.slug}`}>
-      <div
-        className={`relative overflow-hidden bg-ink-900 ${className}`}
-        style={{
-          backgroundImage: `radial-gradient(120% 90% at ${20 + (seed % 50)}% 0%, rgba(201,150,47,0.32) 0%, transparent 60%), radial-gradient(90% 80% at ${70 - (seed % 40)}% 100%, rgba(27,36,32,0.95) 0%, transparent 65%)`,
-        }}
-      >
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(115deg, #E8C46A 0 1px, transparent 1px 14px)",
-          }}
+      <div className={`absolute inset-0 overflow-hidden bg-ink-800 ${className}`}>
+        <Image
+          src={activity.cover.src}
+          alt={activity.cover.alt}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-cover"
         />
-        {activity.image ? null : (
-          <span className="absolute right-3 bottom-3 rounded-full bg-ink-950/60 px-2.5 py-1 font-mono text-[0.6rem] tracking-wider text-stone-500 uppercase">
-            Photo pending
-          </span>
-        )}
       </div>
     </ViewTransition>
   );
 }
 
-function Meta({ activity, tone }: { activity: Activity; tone: Tone }) {
-  const color = tone === "dark" ? "text-stone-500" : "text-stone-500";
+function Meta({ activity }: { activity: Activity }) {
   return (
-    <div className={`flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs ${color}`}>
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-stone-500">
       <span className="inline-flex items-center gap-1.5">
         <svg
           viewBox="0 0 24 24"
@@ -61,7 +56,11 @@ function Meta({ activity, tone }: { activity: Activity; tone: Tone }) {
           <rect x="3" y="5" width="18" height="16" rx="2" />
           <path d="M3 10h18M8 3v4M16 3v4" />
         </svg>
-        <time dateTime={activity.dateISO}>{activity.date}</time>
+        {activity.verified ? (
+          <time dateTime={activity.dateISO}>{activity.date}</time>
+        ) : (
+          <span className="italic">{activity.date}</span>
+        )}
       </span>
       <span className="inline-flex items-center gap-1.5">
         <svg
@@ -81,14 +80,14 @@ function Meta({ activity, tone }: { activity: Activity; tone: Tone }) {
   );
 }
 
-type Tone = "dark" | "light";
-
 export function ActivityCard({
   activity,
   tone = "dark",
+  priority = false,
 }: {
   activity: Activity;
-  tone?: Tone;
+  tone?: "dark" | "light";
+  priority?: boolean;
 }) {
   const shell =
     tone === "dark"
@@ -102,10 +101,19 @@ export function ActivityCard({
       href={`/activities/${activity.slug}`}
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-500 hover:-translate-y-1 ${shell}`}
     >
-      <div className="relative">
-        <ActivityVisual activity={activity} className="aspect-[16/10] w-full" />
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <ActivityVisual
+          activity={activity}
+          className="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          priority={priority}
+        />
+        {/* Scrim so the pill stays legible over any photograph. */}
         <span
-          className={`absolute top-4 left-4 rounded-full px-3 py-1 font-mono text-[0.62rem] font-medium tracking-[0.12em] uppercase ring-1 ring-inset ${categoryTone[activity.category]}`}
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/70 to-transparent"
+        />
+        <span
+          className={`absolute top-4 left-4 rounded-full px-3 py-1 font-mono text-[0.62rem] font-medium tracking-[0.12em] uppercase ring-1 ring-inset backdrop-blur-sm ${categoryTone[activity.category]}`}
         >
           {activity.category}
         </span>
@@ -113,7 +121,7 @@ export function ActivityCard({
 
       <div className="flex grow flex-col p-7">
         <h3
-          className={`font-display text-xl leading-snug transition-colors group-hover:text-brass-300 ${title}`}
+          className={`font-display text-xl leading-snug transition-colors group-hover:text-brass-400 ${title}`}
         >
           {activity.title}
         </h3>
@@ -123,8 +131,8 @@ export function ActivityCard({
         </p>
 
         <div className="mt-6 space-y-4">
-          <Meta activity={activity} tone={tone} />
-          <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.14em] text-brass-400 uppercase transition-all duration-300 group-hover:gap-3">
+          <Meta activity={activity} />
+          <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.14em] text-brass-500 uppercase transition-all duration-300 group-hover:gap-3">
             {activity.readingMinutes} min read
             <span aria-hidden="true">→</span>
           </span>
