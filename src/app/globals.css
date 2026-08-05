@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand — deep green: growth, education, stability */
+  --color-brand-50: #f0f9f4;
+  --color-brand-100: #dcf0e4;
+  --color-brand-200: #bbe1cb;
+  --color-brand-300: #8dcaa9;
+  --color-brand-400: #57ab80;
+  --color-brand-500: #348c62;
+  --color-brand-600: #24704e;
+  --color-brand-700: #1d5940;
+  --color-brand-800: #1a4735;
+  --color-brand-900: #163a2c;
+  --color-brand-950: #0a2119;
+
+  /* Accent — warm gold: highlights, CTAs, statistics */
+  --color-gold-50: #fdf8ed;
+  --color-gold-100: #f9edcd;
+  --color-gold-200: #f3d998;
+  --color-gold-300: #ecc063;
+  --color-gold-400: #e6a83e;
+  --color-gold-500: #d98c22;
+  --color-gold-600: #c06d19;
+  --color-gold-700: #a05219;
+  --color-gold-800: #83411b;
+  --color-gold-900: #6c3719;
+
+  /* Neutrals — warm greys, softer than pure black on cream */
+  --color-ink-50: #f8f7f5;
+  --color-ink-100: #efede8;
+  --color-ink-200: #ded9d1;
+  --color-ink-300: #c2bab0;
+  --color-ink-400: #9d9287;
+  --color-ink-500: #7f746a;
+  --color-ink-600: #665d55;
+  --color-ink-700: #524b45;
+  --color-ink-800: #3a3531;
+  --color-ink-900: #211e1b;
+
+  --color-cream: #fbf9f5;
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor targets so the sticky header never covers a heading. */
+    scroll-padding-top: 5.5rem;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink-800);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-200);
+    color: var(--color-brand-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
