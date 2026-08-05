@@ -1,39 +1,43 @@
 import Link from "next/link";
-import type { ComponentProps, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { Magnetic } from "@/components/motion/primitives";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "brass" | "outline" | "ghost-dark";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition duration-200 ease-out-soft";
+  "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full px-7 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] uppercase transition-colors duration-300";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-brand-700 text-white shadow-sm hover:bg-brand-800 hover:shadow-md active:translate-y-px",
-  secondary:
-    "bg-gold-400 text-brand-950 shadow-sm hover:bg-gold-300 hover:shadow-md active:translate-y-px",
-  ghost:
-    "border border-brand-200 bg-transparent text-brand-800 hover:border-brand-400 hover:bg-brand-50",
+  brass: "bg-brass-500 text-ink-950 hover:bg-brass-400",
+  outline:
+    "border border-brass-500/60 text-brass-300 hover:border-brass-400 hover:text-brass-200",
+  "ghost-dark":
+    "border border-ink-900/15 text-ink-900 hover:border-ink-900/40 hover:bg-ink-900/5",
 };
 
 export function ButtonLink({
   href,
-  variant = "primary",
+  variant = "brass",
   children,
   className = "",
-  ...props
+  magnetic = true,
 }: {
   href: string;
   variant?: Variant;
   children: ReactNode;
   className?: string;
-} & Omit<ComponentProps<typeof Link>, "href" | "className" | "children">) {
-  return (
-    <Link
-      href={href}
-      className={`${base} ${variants[variant]} ${className}`}
-      {...props}
-    >
-      {children}
+  magnetic?: boolean;
+}) {
+  const button = (
+    <Link href={href} className={`${base} ${variants[variant]} ${className}`}>
+      {/* Sheen that sweeps across on hover. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+      />
+      <span className="relative">{children}</span>
     </Link>
   );
+
+  return magnetic ? <Magnetic>{button}</Magnetic> : button;
 }

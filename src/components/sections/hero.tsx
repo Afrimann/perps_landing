@@ -1,49 +1,125 @@
+"use client";
+
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 import { Container } from "@/components/ui/container";
 import { ButtonLink } from "@/components/ui/button";
+import { MaskedLines } from "@/components/motion/primitives";
 import { hero } from "@/content/site";
 
 export function Hero() {
+  const ref = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+
+  /* Content drifts up and fades slightly slower than the scroll, so the
+     hero feels like it has depth rather than simply leaving. */
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+
   return (
-    <section className="relative overflow-hidden bg-brand-950">
-      {/* Ambient colour wash. Decorative only — replaced by a real photograph
-          once the foundation supplies imagery. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(120% 90% at 15% 0%, #1d5940 0%, transparent 55%), radial-gradient(90% 80% at 95% 100%, #83411b 0%, transparent 60%)",
-        }}
-      />
+    <section
+      ref={ref}
+      className="grain relative flex min-h-[92svh] items-center overflow-hidden bg-ink-950"
+    >
+      {/* Two slow brass washes, counter-drifting. Decorative. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div
+          className="animate-drift absolute -top-1/3 -left-1/4 h-[80vh] w-[80vw] rounded-full opacity-50 blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(126,90,25,0.55) 0%, transparent 65%)",
+          }}
+        />
+        <div
+          className="animate-drift absolute -right-1/4 -bottom-1/3 h-[70vh] w-[70vw] rounded-full opacity-40 blur-3xl"
+          style={{
+            animationDelay: "-11s",
+            background:
+              "radial-gradient(circle, rgba(27,36,32,0.9) 0%, transparent 70%)",
+          }}
+        />
+      </div>
 
-      <Container className="relative py-24 lg:py-32">
-        <div className="max-w-3xl">
-          <p className="mb-6 text-xs font-semibold tracking-[0.18em] text-gold-300 uppercase">
+      <motion.div
+        style={reduced ? undefined : { y, opacity }}
+        className="relative w-full"
+      >
+        <Container className="py-28 lg:py-36">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.9, delay: 0.1 }}
+            className="mb-8 font-mono text-[0.7rem] font-medium tracking-[0.28em] text-brass-500 uppercase"
+          >
             {hero.eyebrow}
-          </p>
+          </motion.p>
 
-          <h1 className="font-display text-4xl leading-[1.08] tracking-tight text-balance text-white sm:text-5xl lg:text-6xl">
-            {hero.heading}
+          <h1 className="font-display text-[2.6rem] leading-[1.04] tracking-[-0.02em] text-white sm:text-[4rem] lg:text-[5.2rem]">
+            <MaskedLines
+              lines={[
+                hero.headingLead,
+                <span key="accent" className="text-gradient-brass">
+                  {hero.headingAccent}
+                </span>,
+              ]}
+              delay={0.25}
+            />
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-relaxed text-pretty text-brand-100 sm:text-xl">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.65 }}
+            className="mt-9 max-w-xl text-[1.05rem] leading-relaxed text-pretty text-stone-400 sm:text-lg"
+          >
             {hero.subheading}
-          </p>
+          </motion.p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <ButtonLink href={hero.primaryCta.href} variant="secondary">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.8 }}
+            className="mt-11 flex flex-wrap items-center gap-4"
+          >
+            <ButtonLink href={hero.primaryCta.href} variant="brass">
               {hero.primaryCta.label}
             </ButtonLink>
-            <ButtonLink
-              href={hero.secondaryCta.href}
-              variant="ghost"
-              className="border-brand-300/50 text-white hover:border-gold-300 hover:bg-white/10"
-            >
+            <ButtonLink href={hero.secondaryCta.href} variant="outline">
               {hero.secondaryCta.label}
             </ButtonLink>
-          </div>
-        </div>
-      </Container>
+          </motion.div>
+        </Container>
+      </motion.div>
+
+      {/* Scroll cue */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <motion.span
+          animate={reduced ? undefined : { y: [0, 9, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          className="block text-brass-500/70"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            className="size-6"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </motion.span>
+      </motion.div>
     </section>
   );
 }

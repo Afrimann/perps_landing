@@ -1,74 +1,111 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand — deep green: growth, education, stability */
-  --color-brand-50: #f0f9f4;
-  --color-brand-100: #dcf0e4;
-  --color-brand-200: #bbe1cb;
-  --color-brand-300: #8dcaa9;
-  --color-brand-400: #57ab80;
-  --color-brand-500: #348c62;
-  --color-brand-600: #24704e;
-  --color-brand-700: #1d5940;
-  --color-brand-800: #1a4735;
-  --color-brand-900: #163a2c;
-  --color-brand-950: #0a2119;
+  /* ── Ground: near-black with a green undertone. Reads as black beside
+        brass, but is distinctly ours next to a pure-black reference. ── */
+  --color-ink-950: #070a09;
+  --color-ink-900: #0a0e0c;
+  --color-ink-800: #131a17;
+  --color-ink-700: #1b2420;
+  --color-ink-600: #2a3630;
+  --color-ink-500: #46564e;
 
-  /* Accent — warm gold: highlights, CTAs, statistics */
-  --color-gold-50: #fdf8ed;
-  --color-gold-100: #f9edcd;
-  --color-gold-200: #f3d998;
-  --color-gold-300: #ecc063;
-  --color-gold-400: #e6a83e;
-  --color-gold-500: #d98c22;
-  --color-gold-600: #c06d19;
-  --color-gold-700: #a05219;
-  --color-gold-800: #83411b;
-  --color-gold-900: #6c3719;
+  /* ── Accent: metallic brass, deeper than a bright yellow-gold ── */
+  --color-brass-200: #f2dda6;
+  --color-brass-300: #e8c46a;
+  --color-brass-400: #d9ab47;
+  --color-brass-500: #c9962f;
+  --color-brass-600: #a87a22;
+  --color-brass-700: #7e5a19;
 
-  /* Neutrals — warm greys, softer than pure black on cream */
-  --color-ink-50: #f8f7f5;
-  --color-ink-100: #efede8;
-  --color-ink-200: #ded9d1;
-  --color-ink-300: #c2bab0;
-  --color-ink-400: #9d9287;
-  --color-ink-500: #7f746a;
-  --color-ink-600: #665d55;
-  --color-ink-700: #524b45;
-  --color-ink-800: #3a3531;
-  --color-ink-900: #211e1b;
+  /* ── Light grounds ── */
+  --color-ivory: #f7f4ec;
+  --color-ivory-dim: #efeadf;
 
-  --color-cream: #fbf9f5;
+  /* ── Warm neutrals for text on light ── */
+  --color-stone-300: #c7c0b6;
+  --color-stone-400: #a29a90;
+  --color-stone-500: #857d74;
+  --color-stone-600: #6b6560;
+  --color-stone-700: #4a453f;
+  --color-stone-900: #221f1c;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-display: var(--font-bodoni), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Offset anchor targets so the sticky header never covers a heading. */
-    scroll-padding-top: 5.5rem;
+    scroll-padding-top: 6rem;
+    color-scheme: dark;
   }
 
   body {
-    background-color: var(--color-cream);
-    color: var(--color-ink-800);
+    background-color: var(--color-ink-900);
+    color: var(--color-stone-300);
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background-color: var(--color-gold-200);
-    color: var(--color-brand-900);
+    background-color: var(--color-brass-500);
+    color: var(--color-ink-950);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-brand-600);
+    outline: 2px solid var(--color-brass-400);
     outline-offset: 3px;
     border-radius: 2px;
   }
+
+  /* Figures line up in columns wherever they are compared. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  /* Film grain over the dark hero — keeps a large flat ground from looking
+     digitally dead. Pure CSS, no image request. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-gradient-brass {
+    background: linear-gradient(
+      100deg,
+      var(--color-brass-300),
+      var(--color-brass-500) 45%,
+      var(--color-brass-200)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.12);
+  }
+}
+
+.animate-drift {
+  animation: drift 22s var(--ease-out-soft) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
