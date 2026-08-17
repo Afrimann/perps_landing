@@ -6,11 +6,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/primitives";
 import { ActivityCard } from "@/components/ui/activity-card";
-import {
-  activities,
-  hasUnverifiedActivities,
-  impactSection,
-} from "@/content/activities";
+import { activities, impactSection } from "@/content/activities";
 
 export function Impact() {
   const trackRef = useRef<HTMLUListElement>(null);
@@ -115,20 +111,10 @@ export function Impact() {
           ))}
         </ul>
 
-        <div className="mt-14 flex flex-col items-center gap-6">
+        <div className="mt-14 flex justify-center">
           <ButtonLink href="/activities" variant="brass">
             View all activities
           </ButtonLink>
-
-          {/* Visible while any report is still a placeholder. Delete the
-              notice by verifying the entries in content/activities.ts. */}
-          {hasUnverifiedActivities ? (
-            <p className="max-w-lg text-center text-xs leading-relaxed text-stone-500">
-              Photographs and programme descriptions are the foundation&rsquo;s
-              own. Where a report is marked date pending, its exact date,
-              location and reach are still being confirmed.
-            </p>
-          ) : null}
         </div>
       </Container>
     </section>

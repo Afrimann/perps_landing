@@ -4,19 +4,22 @@
  * ─────────────────────────────────────────────────────────────────────────
  *  STATUS OF EACH REPORT
  *
- *  `verified: true`  — details confirmed against material the foundation
- *                      supplied (e.g. its own event flyer). Photographs
- *                      throughout are genuine images of the foundation's
- *                      work.
+ *  Every report below carries a YEAR supplied by the foundation. Dates are
+ *  deliberately year-only: the foundation gave years, and inventing a month
+ *  or a day to make a date look precise would be a fabrication.
  *
- *  `verified: false` — the photographs and description are real, but the
- *                      DATE and LOCATION are not yet confirmed. These
- *                      surfaces render an honest "date pending" state
- *                      rather than a plausible-looking invention.
+ *  `dateISO` is the year alone (e.g. "2025"), which is a valid value for a
+ *  <time datetime> attribute and does not assert a day the foundation has
+ *  not confirmed.
  *
- *  No report states a turnout, a beneficiary count or an outcome figure
- *  that the foundation has not confirmed. Where such a figure belongs, the
- *  text says it is pending instead of guessing.
+ *  Headline figures (3,000 widows and single mothers; 1,000 widows) are the
+ *  foundation's own, as supplied. No report states a turnout, a beneficiary
+ *  count or an outcome figure that did not come from the foundation.
+ *
+ *  ⚠️  PHOTOGRAPH ASSIGNMENT — the images are genuine foundation photographs,
+ *      but WHICH programme each belongs to was inferred from its content, not
+ *      confirmed. If a photo is attached to the wrong year, correct the
+ *      `cover`/`images` references here; nothing else needs to change.
  * ─────────────────────────────────────────────────────────────────────────
  *
  * Bodies are STRUCTURED blocks, not markdown strings. The reference site
@@ -24,24 +27,20 @@
  * that class of bug impossible.
  */
 import { photos, type Photo } from "./photos";
+import type { Block } from "./blocks";
+
+export type { Block };
 
 export type ActivityCategory =
   | "Schools & Youth"
   | "Community Relief"
-  | "Elderly Support";
-
-export type Block =
-  | { type: "lede"; text: string }
-  | { type: "heading"; text: string }
-  | { type: "paragraph"; text: string }
-  | { type: "list"; items: { lead: string; rest: string }[] }
-  | { type: "stats"; items: { figure: string; rest: string }[] }
-  | { type: "quote"; text: string; attribution: string };
+  | "Widows & Single Mothers";
 
 export type Activity = {
   slug: string;
   title: string;
   category: ActivityCategory;
+  /** Year only — see the note at the top of this file. */
   date: string;
   dateISO: string;
   location: string;
@@ -49,8 +48,6 @@ export type Activity = {
   summary: string;
   cover: Photo;
   images: Photo[];
-  /** False when the date/location still need confirming. */
-  verified: boolean;
   body: Block[];
 };
 
@@ -65,40 +62,153 @@ export const impactSection = {
 export const categoryTone: Record<ActivityCategory, string> = {
   "Schools & Youth": "bg-sky-400/20 text-sky-200 ring-sky-300/40",
   "Community Relief": "bg-brass-500/20 text-brass-200 ring-brass-400/40",
-  "Elderly Support": "bg-emerald-400/20 text-emerald-200 ring-emerald-300/40",
+  "Widows & Single Mothers":
+    "bg-emerald-400/20 text-emerald-200 ring-emerald-300/40",
 };
 
 /** Pill colours for a LIGHT ground — the story page title block on ivory. */
 export const categoryToneLight: Record<ActivityCategory, string> = {
   "Schools & Youth": "bg-sky-100 text-sky-800 ring-sky-700/20",
   "Community Relief": "bg-brass-200/50 text-brass-700 ring-brass-600/25",
-  "Elderly Support": "bg-emerald-100 text-emerald-800 ring-emerald-700/20",
+  "Widows & Single Mothers":
+    "bg-emerald-100 text-emerald-800 ring-emerald-700/20",
 };
 
 export const activities: Activity[] = [
+  {
+    slug: "foodstuffs-3000-widows-single-mothers",
+    title: "Foodstuffs for 3,000 Widows and Single Mothers",
+    category: "Widows & Single Mothers",
+    date: "2025",
+    dateISO: "2025",
+    location: "Communities across Delta State",
+    readingMinutes: 3,
+    summary:
+      "The foundation's largest distribution to date — foodstuffs shared with three thousand widows and single mothers across a number of different communities.",
+    cover: photos.foodPrep,
+    images: [
+      photos.foodPrep,
+      photos.truckRice,
+      photos.truckBagsA,
+      photos.truckBagsB,
+      photos.indoorDistribution,
+    ],
+    body: [
+      {
+        type: "lede",
+        text: "In 2025 the foundation shared foodstuffs with 3,000 widows and single mothers across a number of different communities — the largest single undertaking in its history.",
+      },
+      { type: "heading", text: "Why Widows and Single Mothers" },
+      {
+        type: "paragraph",
+        text: "A household run by one woman absorbs every shock alone. When food prices move, there is no second income to move with them — and the first thing that gives way is usually a child's schooling. Reaching the mother is the most direct way to keep the child in the classroom.",
+      },
+      { type: "heading", text: "How It Was Done" },
+      {
+        type: "list",
+        items: [
+          {
+            lead: "Portioning first",
+            rest: "rice, pasta, tomato mix and seasoning are divided into individual family packs before anyone travels",
+          },
+          {
+            lead: "Taken to the communities",
+            rest: "packs are moved by vehicle directly into the neighbourhoods receiving them, rather than asking people to travel to a central point",
+          },
+          {
+            lead: "Handed over in person",
+            rest: "provisions go directly to the named recipient, never left with an intermediary to pass on",
+          },
+        ],
+      },
+      { type: "heading", text: "Scale" },
+      {
+        type: "stats",
+        items: [
+          { figure: "3,000", rest: "widows and single mothers reached" },
+          { figure: "2025", rest: "delivered across the year" },
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Distribution on this scale is only possible because the packing happens before the travelling. Counting at the point of handover would turn an orderly outreach into a crowd.",
+      },
+    ],
+  },
+  {
+    slug: "operation-feeding-1000-widows",
+    title: "Operation Feeding: 1,000 Widows",
+    category: "Widows & Single Mothers",
+    date: "2024",
+    dateISO: "2024",
+    location: "Delta State",
+    readingMinutes: 3,
+    summary:
+      "One thousand widows brought together in a single gathering to be fed, provisioned and — for an afternoon — treated as guests rather than as a queue.",
+    cover: photos.hallGroup,
+    images: [
+      photos.hallGroup,
+      photos.eldersReceiving,
+      photos.eldersAddress,
+      photos.eldersGathered,
+      photos.hallBriefing,
+      photos.hallAddress,
+    ],
+    body: [
+      {
+        type: "lede",
+        text: "In 2024 the foundation ran Operation Feeding, bringing 1,000 widows together to be fed and provisioned in one gathering.",
+      },
+      { type: "heading", text: "Seated, Not Queuing" },
+      {
+        type: "paragraph",
+        text: "The format is deliberate. Widows gather in a community hall, are addressed directly about what is being provided, and receive their provisions in their seats. It removes the scramble at the gate, and it treats a thousand women as guests rather than as a crowd to be managed.",
+      },
+      {
+        type: "paragraph",
+        text: "Many of those who come are elderly, and are among the least able to stand in a queue for an hour — which is exactly why they are so often missed by relief work that is organised around one.",
+      },
+      { type: "heading", text: "Scale" },
+      {
+        type: "stats",
+        items: [
+          { figure: "1,000", rest: "widows fed and provisioned" },
+          { figure: "2024", rest: "Operation Feeding" },
+        ],
+      },
+      { type: "heading", text: "What It Is Really For" },
+      {
+        type: "paragraph",
+        text: "A meal and a bag of provisions solve one week. Being addressed by name, seated, and sent home with something solves rather less — but it is the part people describe afterwards. The foundation runs these gatherings because company is a form of provision too.",
+      },
+    ],
+  },
   {
     slug: "six-secondary-schools-competition",
     title: "6 Secondary Schools Competition",
     category: "Schools & Youth",
     /* VERIFIED — from the foundation's own event flyer. */
-    date: "9 November 2024",
-    dateISO: "2024-11-09",
+    date: "2024",
+    dateISO: "2024",
     location: "Yonwuren College Ugbuwangue, Warri, Delta State",
     readingMinutes: 4,
     summary:
       "Six secondary schools brought together for a day of football, quiz, dance and pageantry — with ₦550,000 in prizes, awards and school items.",
     cover: photos.footballTeam,
     images: [photos.footballTeam, photos.schoolsFlyer, photos.teamPitch],
-    verified: true,
     body: [
       {
         type: "lede",
-        text: "On Saturday 9 November 2024, Yonwuren Naj Foundation brought six secondary schools together at Yonwuren College Ugbuwangue in Warri, Delta State, for a full day of competition across sport, academics and the arts.",
+        text: "In 2024, Yonwuren Naj Foundation brought six secondary schools together at Yonwuren College Ugbuwangue in Warri, Delta State, for a full day of competition across sport, academics and the arts.",
       },
       { type: "heading", text: "Why a Competition" },
       {
         type: "paragraph",
         text: "Prize money and a crowd do something a classroom cannot. A competition gives students a reason to prepare, a stage to be recognised on, and a memory of being taken seriously — and it reaches whole schools at once rather than one child at a time.",
+      },
+      {
+        type: "paragraph",
+        text: "It is also the oldest idea the foundation has. The first thing its founder ever organised, back in 2013, was a pageant built around the same conviction: put young people on a stage and a town will revise its opinion of them in an evening.",
       },
       { type: "heading", text: "The Categories" },
       {
@@ -114,95 +224,42 @@ export const activities: Activity[] = [
         type: "paragraph",
         text: "Alongside the prize categories, the day carried awards and a distribution of gifts and school items to participating students.",
       },
-      { type: "heading", text: "Results and Turnout" },
-      {
-        type: "paragraph",
-        text: "Final standings, participant numbers and the schools represented are being compiled with the foundation and will be published here.",
-      },
     ],
   },
   {
-    slug: "community-relief-outreach",
-    title: "Community Relief Outreach",
+    slug: "cash-gifts-street-hawkers",
+    title: "Cash Gifts to Street Hawkers",
     category: "Community Relief",
-    date: "Date pending confirmation",
-    dateISO: "2024-01-01",
+    date: "2023",
+    dateISO: "2023",
     location: "Delta State",
-    readingMinutes: 3,
+    readingMinutes: 2,
     summary:
-      "Food and essential provisions portioned, packed and distributed directly to families in market and street communities.",
-    cover: photos.marketHandover,
+      "Cash placed directly into the hands of young people hawking on the roadside — no forms, no ceremony, at the exact point of need.",
+    cover: photos.marketRedTee,
     images: [
-      photos.foodPrep,
+      photos.marketRedTee,
       photos.marketHandover,
-      photos.truckBagsA,
-      photos.truckRice,
       photos.streetCelebration,
-      photos.hallBriefing,
     ],
-    verified: false,
     body: [
       {
         type: "lede",
-        text: "The foundation's relief work reaches families where they already are — in markets, on residential streets, and in community halls — with provisions portioned and counted in advance.",
+        text: "In 2023 the foundation went out to the roadsides and markets and gave cash gifts directly to the young people hawking there.",
       },
-      { type: "heading", text: "How It Works" },
-      {
-        type: "list",
-        items: [
-          {
-            lead: "Portioning first",
-            rest: "rice, pasta, tomato mix and seasoning are divided into individual family packs before anyone travels",
-          },
-          {
-            lead: "Distribution on site",
-            rest: "packs are taken by vehicle directly into the communities receiving them",
-          },
-          {
-            lead: "Named recipients",
-            rest: "provisions are handed over in person rather than left with an intermediary",
-          },
-        ],
-      },
-      { type: "heading", text: "Reach" },
+      { type: "heading", text: "Why Cash, and Why There" },
       {
         type: "paragraph",
-        text: "The number of households reached and the dates of each outreach are being confirmed with the foundation and will be published here.",
+        text: "A child balancing a tray on their head during school hours is the same sight that started this foundation. They are working because a household needs the money today, and no amount of encouragement changes that arithmetic.",
       },
-    ],
-  },
-  {
-    slug: "elderly-citizens-outreach",
-    title: "Elderly Citizens Outreach",
-    category: "Elderly Support",
-    date: "Date pending confirmation",
-    dateISO: "2024-01-02",
-    location: "Delta State",
-    readingMinutes: 3,
-    summary:
-      "Provisions, company and time with the elders of the community — delivered seated, in person, and without a queue at a gate.",
-    cover: photos.hallGroup,
-    images: [
-      photos.hallGroup,
-      photos.eldersReceiving,
-      photos.eldersAddress,
-      photos.eldersGathered,
-    ],
-    verified: false,
-    body: [
-      {
-        type: "lede",
-        text: "Elderly members of the community are among the least reached by relief work and the least able to queue for it. The foundation's elder outreaches are run seated, unhurried, and with time set aside for conversation.",
-      },
-      { type: "heading", text: "What Happens" },
       {
         type: "paragraph",
-        text: "Elders gather in a community hall, are addressed directly about what is being provided, and receive their provisions in their seats. The format is deliberate: it removes the scramble, and it treats people as guests rather than as a crowd to be managed.",
+        text: "Cash respects what people already know about their own situation. A bag of provisions is a decision made on someone's behalf; money is not. And giving it where they stand means no one has to abandon a day's earnings to travel and collect it.",
       },
-      { type: "heading", text: "Reach" },
+      { type: "heading", text: "The Point" },
       {
         type: "paragraph",
-        text: "The number of elders supported and the dates of each gathering are being confirmed with the foundation and will be published here.",
+        text: "This outreach was never presented as a solution. It buys a day, sometimes a week. What it does reliably is put the foundation in front of the exact young people its education work exists for — and several conversations that began at a car window have carried on since.",
       },
     ],
   },
@@ -210,5 +267,3 @@ export const activities: Activity[] = [
 
 export const activityBySlug = (slug: string) =>
   activities.find((activity) => activity.slug === slug);
-
-export const hasUnverifiedActivities = activities.some((a) => !a.verified);

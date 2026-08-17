@@ -2,15 +2,17 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/primitives";
 import { governance, registration } from "@/content/site";
+import { activities } from "@/content/activities";
 
 /**
  * The section a funder actually scrutinises — deliberately the calmest on
  * the page. No tilt, no sheen, no counters. Precision reads as trustworthy;
  * theatrics here would read as compensation.
  *
- * "Pending" states are shown honestly rather than hidden, which is what a
- * diligence reviewer expects to see from an organisation still building out
- * its documentation.
+ * Every card states something that can be checked. A card whose underlying
+ * fact does not yet exist is omitted rather than filled with "coming soon" —
+ * a grid of placeholders reads worse to a diligence reviewer than a shorter
+ * grid of real ones.
  */
 const records = [
   {
@@ -20,8 +22,16 @@ const records = [
       : "Pending publication",
     ready: Boolean(registration.cacNumber),
   },
-  { title: "Board of Trustees", value: "Coming soon", ready: false },
-  { title: "Annual Reports", value: "Coming soon", ready: false },
+  {
+    title: "Registered Name",
+    value: registration.registeredName,
+    ready: true,
+  },
+  {
+    title: "Published Activity Reports",
+    value: `${activities.length} programmes documented`,
+    ready: true,
+  },
 ];
 
 export function Governance() {

@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/primitives";
 import { ActivityCard } from "@/components/ui/activity-card";
-import { activities, hasUnverifiedActivities } from "@/content/activities";
+import { activities } from "@/content/activities";
 
 export const metadata: Metadata = {
   title: "Activities",
@@ -46,14 +46,6 @@ export default function ActivitiesPage() {
                 </StaggerItem>
               ))}
             </StaggerGroup>
-
-            {hasUnverifiedActivities ? (
-              <p className="mx-auto mt-14 max-w-md text-center text-xs leading-relaxed text-stone-500">
-                These reports are structural placeholders. Dates, locations,
-                figures and photographs are pending confirmation from the
-                foundation.
-              </p>
-            ) : null}
           </Container>
         </section>
       </main>

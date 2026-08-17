@@ -177,7 +177,7 @@ export const galleryStrands = [
   { id: "all", label: "All" },
   { id: "schools", label: "Schools & Youth" },
   { id: "relief", label: "Community Relief" },
-  { id: "elders", label: "Elderly Support" },
+  { id: "elders", label: "Widows & Elders" },
 ] as const;
 
 export type StrandFilter = (typeof galleryStrands)[number]["id"];
