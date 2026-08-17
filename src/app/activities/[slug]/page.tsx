@@ -52,7 +52,7 @@ export default async function ActivityPage({
       <main id="main">
         {/* Header image morphs from the card that was clicked. */}
         <div className="relative h-[46vh] min-h-[300px] lg:h-[58vh]">
-          <ActivityVisual activity={activity} sizes="100vw" priority />
+          <ActivityVisual activity={activity} sizes="100vw" preload />
           <div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ivory to-transparent"

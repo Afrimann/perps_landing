@@ -71,14 +71,19 @@
 
 @layer utilities {
   /* Film grain over the dark hero — keeps a large flat ground from looking
-     digitally dead. Pure CSS, no image request. */
+     digitally dead.
+
+     A pre-rasterised tile rather than an inline feTurbulence filter: the
+     filter costs a full fractal-noise evaluation on the critical path before
+     the hero can paint, where the tile costs a 1.9 KB decode. */
   .grain::after {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("/noise.png");
+    background-repeat: repeat;
   }
 
   .text-gradient-brass {
@@ -91,6 +96,285 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+}
+
+/* ══ Entrance system ═══════════════════════════════════════════════════
+   Every entrance on the site is CSS. A single shared IntersectionObserver
+   (components/motion/reveal-observer.tsx) adds `.is-revealed` once, which
+   is what the transitions below key off.
+
+   The hidden start state is scoped to `.reveal-ready`, a class an inline
+   script sets on <html> before first paint. If scripting is unavailable the
+   class is never set, the hidden state never applies, and the page renders
+   plainly — rather than every section below the hero being stranded at
+   opacity 0 with no observer coming to release it.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-reveal] {
+  transition:
+    opacity 0.75s var(--ease-out-soft) var(--reveal-delay, 0s),
+    transform 0.75s var(--ease-out-soft) var(--reveal-delay, 0s);
+}
+
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 24px));
+}
+
+.reveal-ready [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Children of a stagger group enter one behind the next. Position-based
+   rather than index-based so the group stays a server component — it never
+   needs to know how many children it was handed. */
+[data-reveal-group] > * {
+  --reveal-delay: 0.35s;
+}
+[data-reveal-group] > *:nth-child(1) {
+  --reveal-delay: 0s;
+}
+[data-reveal-group] > *:nth-child(2) {
+  --reveal-delay: 0.07s;
+}
+[data-reveal-group] > *:nth-child(3) {
+  --reveal-delay: 0.14s;
+}
+[data-reveal-group] > *:nth-child(4) {
+  --reveal-delay: 0.21s;
+}
+[data-reveal-group] > *:nth-child(5) {
+  --reveal-delay: 0.28s;
+}
+
+/* ── Masked headline: lines rise out of a clipped edge ──
+   Transform only, deliberately no opacity. An element at opacity 0 is not a
+   Largest Contentful Paint candidate, so fading a headline in postpones the
+   metric by the length of the animation. Sliding it at full opacity does
+   not. */
+[data-reveal-line] {
+  display: block;
+  transition: transform 1s var(--ease-out-soft) var(--reveal-delay, 0s);
+}
+
+.reveal-ready [data-reveal-line] {
+  transform: translateY(110%);
+}
+
+.reveal-ready [data-reveal-line].is-revealed {
+  transform: none;
+}
+
+/* Above-the-fold headlines run on load instead of waiting for the observer,
+   which would otherwise hold them clipped until hydration. */
+@keyframes line-rise {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+[data-reveal-line-immediate] {
+  display: block;
+  animation: line-rise 1s var(--ease-out-soft) var(--reveal-delay, 0s) both;
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.9s var(--ease-out-soft) var(--reveal-delay, 0s) both;
+}
+
+/* ── Line icons that trace themselves once in view ──
+   Paths carry pathLength="1" so a single dash length works for every shape
+   regardless of its real perimeter. */
+[data-draw] > * {
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 1.1s var(--ease-out-soft) var(--reveal-delay, 0s);
+}
+
+.reveal-ready [data-draw] > * {
+  stroke-dashoffset: 1;
+}
+
+.reveal-ready [data-draw].is-revealed > * {
+  stroke-dashoffset: 0;
+}
+
+/* ── Hero ──
+   Content drifts up and fades slightly slower than the scroll, so the hero
+   feels like it has depth rather than simply leaving.
+
+   A scroll timeline rather than a scroll listener: this used to be a
+   `useScroll` + `useTransform` pair writing inline styles to the largest
+   element on the page on every scroll frame, from the main thread. */
+@keyframes hero-exit {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(22%);
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .hero-parallax {
+    animation: hero-exit linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 90vh;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+.animate-nudge {
+  animation: nudge 2.2s ease-in-out infinite;
+}
+
+@keyframes amount-tick {
+  from {
+    opacity: 0.4;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-amount-tick {
+  animation: amount-tick 0.25s ease both;
+}
+
+/* ── Image viewer ── */
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightbox-figure-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lightbox {
+  animation: lightbox-in 0.3s ease both;
+}
+
+.lightbox[data-closing] {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lightbox-figure {
+  animation: lightbox-figure-in 0.4s var(--ease-out-soft) both;
+}
+
+/* ── Collapsing mobile menu ──
+   `height: auto` is not animatable, but `grid-template-rows: 0fr → 1fr` is,
+   and it resolves to the content's natural height. The child must own the
+   `overflow: hidden` for the row to actually clip. */
+.menu-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.4s var(--ease-out-soft),
+    opacity 0.4s var(--ease-out-soft);
+}
+
+.menu-collapse[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* ── Pointer-tilted card ──
+   The angles and sheen position arrive as custom properties written straight
+   to the node by TiltCard, so tracking the cursor never re-renders React. */
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.4s var(--ease-out-soft);
+}
+
+.tilt-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(
+    340px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(232, 196, 106, 0.1),
+    transparent 65%
+  );
+}
+
+.group:hover .tilt-sheen {
+  opacity: 1;
+}
+
+/* ── Scroll progress rail ──
+   Scroll-driven animation where supported, so the rail costs no JS at all.
+   Where it is not, the rail simply stays empty — it is decorative. */
+@keyframes rail-fill {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.scroll-rail-fill {
+  transform-origin: top;
+  /* Collapsed by default so browsers without scroll-driven animation show an
+     empty rail rather than a permanently full one. */
+  transform: scaleY(0);
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-rail-fill {
+    animation: rail-fill linear both;
+    animation-timeline: scroll(root block);
   }
 }
 

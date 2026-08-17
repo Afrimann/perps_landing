@@ -18,12 +18,12 @@ export function ActivityVisual({
   activity,
   className = "",
   sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 90vw",
-  priority = false,
+  preload = false,
 }: {
   activity: Activity;
   className?: string;
   sizes?: string;
-  priority?: boolean;
+  preload?: boolean;
 }) {
   return (
     <ViewTransition name={`activity-${activity.slug}`}>
@@ -33,7 +33,8 @@ export function ActivityVisual({
           alt={activity.cover.alt}
           fill
           sizes={sizes}
-          priority={priority}
+          quality={60}
+          preload={preload}
           className="object-cover"
         />
       </div>
@@ -79,11 +80,11 @@ function Meta({ activity }: { activity: Activity }) {
 export function ActivityCard({
   activity,
   tone = "dark",
-  priority = false,
+  preload = false,
 }: {
   activity: Activity;
   tone?: "dark" | "light";
-  priority?: boolean;
+  preload?: boolean;
 }) {
   const shell =
     tone === "dark"
@@ -101,7 +102,7 @@ export function ActivityCard({
         <ActivityVisual
           activity={activity}
           className="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          priority={priority}
+          preload={preload}
         />
         {/* Scrim so the pill stays legible over any photograph. */}
         <span

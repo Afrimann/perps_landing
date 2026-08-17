@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion, useScroll, useMotionValueEvent } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { navLinks, site } from "@/content/site";
 
@@ -28,11 +27,23 @@ function Wordmark({ onClick }: { onClick?: () => void }) {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { scrollY } = useScroll();
+  const sentinel = useRef<HTMLDivElement>(null);
 
-  useMotionValueEvent(scrollY, "change", (value) => {
-    setScrolled(value > 24);
-  });
+  /* Whether the page has been scrolled is answered by watching a marker at
+     the top of the document leave the viewport, not by subscribing to scroll
+     position. The browser reports the crossing once; the previous version
+     ran a callback on every scroll frame to compare a number. */
+  useEffect(() => {
+    const node = sentinel.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -49,13 +60,23 @@ export function SiteHeader() {
   }, [open]);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled || open
-          ? "border-b border-white/8 bg-ink-950/85 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
+    <>
+      {/* Sits at the document origin and is scrolled past immediately; the
+          observer above uses it as the "page has moved" signal. Absolute with
+          no positioned ancestor, so it takes up no layout. */}
+      <div
+        ref={sentinel}
+        aria-hidden="true"
+        className="absolute top-0 h-6 w-px"
+      />
+
+      <header
+        className={`sticky top-0 z-50 transition-all duration-500 ${
+          scrolled || open
+            ? "border-b border-white/8 bg-ink-950/85 backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
+        }`}
+      >
       <Container>
         <div className="flex h-20 items-center justify-between gap-6">
           <Wordmark onClick={() => setOpen(false)} />
@@ -109,33 +130,28 @@ export function SiteHeader() {
         </div>
       </Container>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            id="mobile-menu"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-white/8 bg-ink-950 lg:hidden"
-          >
+        {/* Stays mounted and collapses to zero rows, which is how an
+            auto-height transition is done in CSS. `inert` takes the links
+            out of the tab order and the accessibility tree while closed, so
+            keeping them in the DOM costs nothing. */}
+        <div
+          id="mobile-menu"
+          data-open={open}
+          inert={!open}
+          className="menu-collapse border-t border-white/8 bg-ink-950 lg:hidden"
+        >
+          <div className="overflow-hidden">
             <Container className="py-7">
               <nav aria-label="Mobile" className="flex flex-col">
-                {navLinks.map((link, index) => (
-                  <motion.div
+                {navLinks.map((link) => (
+                  <Link
                     key={link.href}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.08 + index * 0.05, duration: 0.4 }}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-brass-300"
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-brass-300"
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
+                    {link.label}
+                  </Link>
                 ))}
                 <Link
                   href="/#give"
@@ -146,9 +162,9 @@ export function SiteHeader() {
                 </Link>
               </nav>
             </Container>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </header>
+          </div>
+        </div>
+      </header>
+    </>
   );
 }
