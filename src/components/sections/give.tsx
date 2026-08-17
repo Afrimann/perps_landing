@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { Counter, MaskedLines, Reveal } from "@/components/motion/primitives";
 import { bankDetails, contact, give } from "@/content/site";
@@ -66,7 +65,7 @@ export function Give() {
     >
       <div
         aria-hidden="true"
-        className="animate-drift pointer-events-none absolute -top-1/4 left-1/2 h-[60vh] w-[80vw] -translate-x-1/2 rounded-full opacity-35 blur-3xl"
+        className="animate-drift pointer-events-none absolute -top-1/4 left-1/2 h-[60vh] w-[80vw] rounded-full opacity-35"
         style={{
           background:
             "radial-gradient(circle, rgba(168,122,34,0.5) 0%, transparent 65%)",
@@ -104,15 +103,15 @@ export function Give() {
                 <span className="font-display text-4xl text-white sm:text-5xl">
                   ₦
                 </span>
-                <motion.span
+                {/* `key` on the amount remounts the node whenever the figure
+                    changes, which restarts the CSS animation — the same
+                    trick the motion version used to retrigger its own. */}
+                <span
                   key={amount}
-                  initial={{ opacity: 0.4, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="font-display text-4xl text-white tabular sm:text-5xl"
+                  className="animate-amount-tick font-display text-4xl text-white tabular sm:text-5xl"
                 >
                   {amount.toLocaleString("en-NG")}
-                </motion.span>
+                </span>
               </div>
 
               <label className="mt-8 block">

@@ -7,13 +7,12 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ScrollRail } from "@/components/motion/scroll-rail";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/motion/primitives";
 import { ActivityCard, ActivityVisual } from "@/components/ui/activity-card";
+import { ProseBlocks } from "@/components/ui/prose-blocks";
 import {
   activities,
   activityBySlug,
   categoryToneLight,
-  type Block,
 } from "@/content/activities";
 
 export function generateStaticParams() {
@@ -32,88 +31,6 @@ export async function generateMetadata({
     description: activity.summary,
     openGraph: { title: activity.title, description: activity.summary },
   };
-}
-
-/**
- * Renders typed content blocks. The reference site stores prose as markdown
- * and leaks an unparsed `## ` onto the page; a discriminated union makes
- * that impossible — an unhandled block would fail to compile.
- */
-function BlockView({ block }: { block: Block }) {
-  switch (block.type) {
-    case "lede":
-      return (
-        <p className="text-lg leading-[1.8] text-pretty text-stone-700">
-          {block.text}
-        </p>
-      );
-
-    case "heading":
-      return (
-        <h2 className="mt-14 font-display text-[1.75rem] leading-snug text-stone-900">
-          {block.text}
-        </h2>
-      );
-
-    case "paragraph":
-      return (
-        <p className="mt-5 leading-[1.85] text-pretty text-stone-600">
-          {block.text}
-        </p>
-      );
-
-    case "list":
-      return (
-        <ul className="mt-6 space-y-4">
-          {block.items.map((item) => (
-            <li key={item.lead} className="flex gap-4 leading-relaxed">
-              <span
-                aria-hidden="true"
-                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brass-500"
-              />
-              <span className="text-stone-600">
-                <strong className="font-semibold text-stone-900">
-                  {item.lead}
-                </strong>{" "}
-                {item.rest}
-              </span>
-            </li>
-          ))}
-        </ul>
-      );
-
-    case "stats":
-      return (
-        <ul className="mt-6 space-y-4">
-          {block.items.map((item) => (
-            <li key={item.figure} className="flex gap-4 leading-relaxed">
-              <span
-                aria-hidden="true"
-                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brass-500"
-              />
-              <span className="text-stone-600">
-                <strong className="font-mono font-semibold text-stone-900 tabular">
-                  {item.figure}
-                </strong>{" "}
-                {item.rest}
-              </span>
-            </li>
-          ))}
-        </ul>
-      );
-
-    case "quote":
-      return (
-        <figure className="mt-10 border-l-2 border-brass-500 pl-6">
-          <blockquote className="font-display text-xl leading-relaxed text-stone-800 italic">
-            &ldquo;{block.text}&rdquo;
-          </blockquote>
-          <figcaption className="mt-3 text-sm text-stone-500">
-            — {block.attribution}
-          </figcaption>
-        </figure>
-      );
-  }
 }
 
 export default async function ActivityPage({
@@ -135,7 +52,7 @@ export default async function ActivityPage({
       <main id="main">
         {/* Header image morphs from the card that was clicked. */}
         <div className="relative h-[46vh] min-h-[300px] lg:h-[58vh]">
-          <ActivityVisual activity={activity} sizes="100vw" priority />
+          <ActivityVisual activity={activity} sizes="100vw" preload />
           <div
             aria-hidden="true"
             className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ivory to-transparent"
@@ -167,22 +84,7 @@ export default async function ActivityPage({
 
               <span className="mt-8 block h-px w-24 bg-gradient-to-r from-brass-500 to-transparent" />
 
-              {!activity.verified ? (
-                <p className="mt-10 rounded-xl border border-dashed border-stone-300 bg-white/60 px-5 py-4 text-sm leading-relaxed text-stone-500">
-                  The photographs and description on this page are the
-                  foundation&rsquo;s own. The exact date, location and number of
-                  people reached are still being confirmed and will be
-                  published here once they are.
-                </p>
-              ) : null}
-
-              <div className="mt-10">
-                {activity.body.map((block, index) => (
-                  <Reveal key={index} delay={0.02 * index}>
-                    <BlockView block={block} />
-                  </Reveal>
-                ))}
-              </div>
+              <ProseBlocks blocks={activity.body} className="mt-10" />
 
               {activity.images.length > 1 ? (
                 <section className="mt-16">

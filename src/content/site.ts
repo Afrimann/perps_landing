@@ -33,7 +33,19 @@ export const contact = {
   phoneHref: "tel:+2349026564700",
   email: "yonwurennajfoundation@gmail.com",
   emailHref: "mailto:yonwurennajfoundation@gmail.com",
+  /**
+   * WhatsApp uses the same line as the phone number above, in wa.me's
+   * required format: international digits only, no `+`, no spaces.
+   * If the foundation moves WhatsApp to a different line, change ONLY
+   * `whatsappNumber` — every link and label is derived from it.
+   */
+  whatsappNumber: "2349026564700",
+  whatsappDisplay: "+234 902 656 4700",
 } as const;
+
+/** Pre-fills the first message so an enquiry does not start with a blank box. */
+export const whatsappHref = (message = "Hello Yonwuren Naj Foundation, I would like to make an enquiry.") =>
+  `https://wa.me/${contact.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
 /* VERIFIED — supplied directly by the foundation */
 export const bankDetails = {
@@ -45,14 +57,14 @@ export const bankDetails = {
 /**
  * Registration and governance evidence.
  *
- * `cacNumber` is intentionally null. The reference site shows another
- * foundation's CAC number; using it here would be a false credential.
- * Supply Yonwuren Naj's own number and the badge renders itself — until
- * then the governance section shows an honest "registration pending"
- * state rather than a fabricated one.
+ * ⚠️  PROVISIONAL — the foundation supplied `1468890` and has stated it will
+ *     be corrected once the confirmed CAC number is to hand. This renders a
+ *     live credential in three places (About, Governance, footer). To pull it
+ *     back to the honest "pending" state, set `cacNumber` to `null` — nothing
+ *     else needs changing.
  */
 export const registration = {
-  cacNumber: null as string | null,
+  cacNumber: "1468890" as string | null,
   registeredName: "Princess Naj Yonwuren Foundation",
 } as const;
 
@@ -61,11 +73,11 @@ export const offices: { city: string; address: string }[] = [];
 
 export const navLinks = [
   { label: "About", href: "/#about" },
+  { label: "Our Story", href: "/story" },
   { label: "Our Pillars", href: "/#pillars" },
   { label: "Impact", href: "/#impact" },
   { label: "Gallery", href: "/#gallery" },
-  { label: "Purpose", href: "/#purpose" },
-  { label: "Governance", href: "/#governance" },
+  { label: "Apply", href: "/apply" },
 ] as const;
 
 /* DRAFT: hero */
@@ -75,8 +87,8 @@ export const hero = {
   headingAccent: "Transforming Futures.",
   subheading:
     "Yonwuren Naj Foundation exists so that a child's circumstances never decide the limit of their future — through education, care, and the steady presence of a community that shows up.",
-  primaryCta: { label: "Support our work", href: "/#give" },
-  secondaryCta: { label: "See what we do", href: "/#pillars" },
+  primaryCta: { label: "Apply for a programme", href: "/apply" },
+  secondaryCta: { label: "Support our work", href: "/#give" },
 } as const;
 
 /* DRAFT: about */
@@ -128,11 +140,11 @@ export const give = {
 export const governance = {
   eyebrow: "Transparency",
   heading: "Governance & Accountability",
-  body: "Yonwuren Naj Foundation is committed to transparency, accountability and responsible stewardship of every contribution. Governance documentation is being published in stages, and this page will be updated as each becomes available.",
+  body: "Yonwuren Naj Foundation is a registered Nigerian foundation. Every programme it runs is written up and published on this site with the year it ran, where it ran and who it reached — so that its record can be checked rather than taken on trust.",
 } as const;
 
 export const contactSection = {
-  eyebrow: "Contact",
-  heading: "Start a conversation",
-  body: "Whether you want to support a child, volunteer your time, or partner with the foundation — we would like to hear from you.",
+  eyebrow: "Get in touch",
+  heading: "Two ways to reach us",
+  body: "Applications for our programmes go through the registration form, so that nothing is lost in a message thread. For questions, follow-ups and anything else, WhatsApp and email are open.",
 } as const;
