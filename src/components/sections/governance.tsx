@@ -36,7 +36,7 @@ const records = [
 
 export function Governance() {
   return (
-    <section id="governance" className="bg-ivory py-28 lg:py-36">
+    <section id="governance" className="bg-paper-dim py-28 lg:py-36">
       <Container>
         <SectionHeading
           eyebrow={governance.eyebrow}
@@ -53,7 +53,7 @@ export function Governance() {
                 <span
                   className={`grid size-11 place-items-center rounded-xl ${
                     record.ready
-                      ? "bg-brass-200/40 text-brass-600"
+                      ? "bg-accent-200/40 text-accent-600"
                       : "bg-stone-100 text-stone-400"
                   }`}
                 >

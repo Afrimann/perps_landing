@@ -24,14 +24,18 @@ export function SectionHeading({
   id?: string;
 }) {
   const centered = align === "center";
-  const headingColor = tone === "dark" ? "text-white" : "text-stone-900";
+  /* Emerald rather than near-black on paper. With seven of the twelve bands
+     now light, headings are where the brand colour has to carry — otherwise
+     the theme reads as "cream site with gold bits" and the green only ever
+     appears on the five dark bands. Clears 9:1 on paper. */
+  const headingColor = tone === "dark" ? "text-white" : "text-surface-800";
   const introColor = tone === "dark" ? "text-stone-400" : "text-stone-600";
 
   return (
     <div className={centered ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
       {eyebrow ? (
         <Reveal>
-          <p className="mb-5 font-mono text-[0.7rem] font-medium tracking-[0.28em] text-brass-500 uppercase">
+          <p className="mb-5 font-mono text-[0.7rem] font-medium tracking-[0.28em] text-accent-500 uppercase">
             {eyebrow}
           </p>
         </Reveal>
@@ -48,7 +52,7 @@ export function SectionHeading({
 
       <Reveal delay={0.16}>
         <span
-          className={`mt-7 block h-px w-24 bg-gradient-to-r from-transparent via-brass-500 to-transparent ${
+          className={`mt-7 block h-px w-24 bg-gradient-to-r from-transparent via-accent-500 to-transparent ${
             centered ? "mx-auto" : ""
           }`}
         />

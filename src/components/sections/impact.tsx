@@ -41,7 +41,7 @@ export function Impact() {
   };
 
   return (
-    <section id="impact" className="bg-ivory-dim py-28 lg:py-36">
+    <section id="impact" className="bg-paper-dim py-28 lg:py-36">
       <Container>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
@@ -60,7 +60,7 @@ export function Impact() {
                 onClick={() => scrollBy(-1)}
                 disabled={atStart}
                 aria-label="Previous activity"
-                className="grid size-12 place-items-center rounded-full border border-stone-300 text-stone-700 transition-all duration-300 hover:border-brass-500 hover:text-brass-600 disabled:pointer-events-none disabled:opacity-30"
+                className="grid size-12 place-items-center rounded-full border border-stone-300 text-stone-700 transition-all duration-300 hover:border-accent-500 hover:text-accent-600 disabled:pointer-events-none disabled:opacity-30"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -79,7 +79,7 @@ export function Impact() {
                 onClick={() => scrollBy(1)}
                 disabled={atEnd}
                 aria-label="Next activity"
-                className="grid size-12 place-items-center rounded-full border border-stone-300 text-stone-700 transition-all duration-300 hover:border-brass-500 hover:text-brass-600 disabled:pointer-events-none disabled:opacity-30"
+                className="grid size-12 place-items-center rounded-full border border-stone-300 text-stone-700 transition-all duration-300 hover:border-accent-500 hover:text-accent-600 disabled:pointer-events-none disabled:opacity-30"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -112,7 +112,7 @@ export function Impact() {
         </ul>
 
         <div className="mt-14 flex justify-center">
-          <ButtonLink href="/activities" variant="brass">
+          <ButtonLink href="/activities" variant="accent">
             View all activities
           </ButtonLink>
         </div>

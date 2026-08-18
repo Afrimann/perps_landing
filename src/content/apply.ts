@@ -155,7 +155,7 @@ export const applyPage = {
   intro:
     "This form is how the foundation receives applications. Everything you send goes straight to the team, and we review each one in the order it arrives.",
 
-  formHeading: "Application form",
+  formHeading: "Application Form",
   formIntro:
     "All fields marked with an asterisk are required. Take your time — a considered application is easier for us to act on than a fast one.",
 
@@ -174,7 +174,7 @@ export const applyPage = {
   submitLabel: "Submit application",
   submittingLabel: "Sending…",
 
-  successHeading: "Your application has been received",
+  successHeading: "Your Application Has Been Received",
   successBody:
     "It is now with the foundation's team. We review applications in the order they arrive and will contact you on the phone number or email you gave us. If your situation is urgent, send us a message on WhatsApp and mention that you have already applied.",
   successAgainLabel: "Submit another application",
@@ -183,7 +183,7 @@ export const applyPage = {
   errorFallback:
     "Something went wrong on our side and your application was not submitted. Please try again — or send it to us on WhatsApp or by email so nothing is lost.",
 
-  enquiriesHeading: "Questions before you apply?",
+  enquiriesHeading: "Questions Before You Apply?",
   enquiriesBody:
     "Applications belong in the form above — it keeps everything in one place and means nothing gets lost in a message thread. For anything else, these reach us directly.",
 } as const;

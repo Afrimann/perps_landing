@@ -6,21 +6,21 @@ import { purpose } from "@/content/site";
 /** Quiet text-only breather between the two heaviest bands. */
 export function Purpose() {
   return (
-    <section id="purpose" className="relative overflow-hidden bg-ink-950 py-28 lg:py-36">
+    <section id="purpose" className="relative overflow-hidden bg-paper py-28 lg:py-36">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brass-500/40 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent"
       />
 
       <Container>
-        <SectionHeading eyebrow={purpose.eyebrow} tone="dark">
+        <SectionHeading eyebrow={purpose.eyebrow} tone="light">
           {purpose.heading}
         </SectionHeading>
 
         <div className="mx-auto mt-12 max-w-2xl space-y-7 text-center">
           {purpose.body.map((paragraph, index) => (
             <Reveal key={paragraph} delay={0.06 * index}>
-              <p className="text-[1.08rem] leading-[1.85] text-pretty text-stone-400">
+              <p className="text-[1.08rem] leading-[1.85] text-pretty text-stone-600">
                 {paragraph}
               </p>
             </Reveal>

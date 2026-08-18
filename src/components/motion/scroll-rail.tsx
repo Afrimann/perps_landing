@@ -13,7 +13,7 @@ export function ScrollRail() {
       aria-hidden="true"
       className="pointer-events-none fixed top-0 right-0 z-40 hidden h-full w-px bg-white/8 lg:block"
     >
-      <div className="scroll-rail-fill h-full w-px bg-gradient-to-b from-brass-300 via-brass-500 to-brass-600" />
+      <div className="scroll-rail-fill h-full w-px bg-gradient-to-b from-accent-300 via-accent-500 to-accent-600" />
     </div>
   );
 }

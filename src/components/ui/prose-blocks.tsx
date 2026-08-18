@@ -2,7 +2,7 @@ import { Reveal } from "@/components/motion/primitives";
 import type { Block } from "@/content/blocks";
 
 /**
- * Renders typed content blocks on an ivory ground.
+ * Renders typed content blocks on an paper ground.
  *
  * The reference site stores prose as markdown strings and leaks an unparsed
  * `## ` onto the page; a discriminated union makes that impossible — an
@@ -41,7 +41,7 @@ export function BlockView({ block }: { block: Block }) {
             <li key={item.lead} className="flex gap-4 leading-relaxed">
               <span
                 aria-hidden="true"
-                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brass-500"
+                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent-500"
               />
               <span className="text-stone-600">
                 <strong className="font-semibold text-stone-900">
@@ -61,7 +61,7 @@ export function BlockView({ block }: { block: Block }) {
             <li key={item.figure} className="flex gap-4 leading-relaxed">
               <span
                 aria-hidden="true"
-                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brass-500"
+                className="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent-500"
               />
               <span className="text-stone-600">
                 <strong className="font-mono font-semibold text-stone-900 tabular">
@@ -76,7 +76,7 @@ export function BlockView({ block }: { block: Block }) {
 
     case "quote":
       return (
-        <figure className="mt-10 border-l-2 border-brass-500 pl-6">
+        <figure className="mt-10 border-l-2 border-accent-500 pl-6">
           <blockquote className="font-display text-xl leading-relaxed text-stone-800 italic">
             &ldquo;{block.text}&rdquo;
           </blockquote>

@@ -12,7 +12,7 @@ import { hero } from "@/content/site";
  */
 export function Hero() {
   return (
-    <section className="grain relative flex min-h-[92svh] items-center overflow-hidden bg-ink-950">
+    <section className="grain relative flex min-h-[92svh] items-center overflow-hidden bg-surface-950">
       {/* Real photograph behind the headline, held well back so the type
           stays the subject.
 
@@ -30,11 +30,16 @@ export function Hero() {
           sizes="100vw"
           className="scale-105 object-cover object-[center_35%] opacity-45"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-transparent to-ink-950/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-surface-950 via-surface-950/85 to-surface-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-transparent to-surface-950/70" />
       </div>
 
-      {/* Two slow brass washes, counter-drifting. Decorative.
+      {/* A gold wash and an emerald one, counter-drifting. Decorative.
+
+          Both are mixed from the theme tokens rather than written as literal
+          rgba(). Hardcoded colour here is what a re-theme misses: these two
+          sat outside the token system and stayed brass-on-grey while every
+          other surface changed.
 
           These carried `blur-3xl` before. A 64px Gaussian blur across an
           80vh x 80vw box, re-rasterised every frame of an infinite scale
@@ -46,7 +51,7 @@ export function Hero() {
           className="animate-drift absolute -top-1/3 -left-1/4 h-[80vh] w-[80vw] rounded-full opacity-50"
           style={{
             background:
-              "radial-gradient(circle, rgba(126,90,25,0.55) 0%, transparent 65%)",
+              "radial-gradient(circle, color-mix(in srgb, var(--color-accent-700) 55%, transparent) 0%, transparent 65%)",
           }}
         />
         <div
@@ -54,7 +59,7 @@ export function Hero() {
           style={{
             animationDelay: "-11s",
             background:
-              "radial-gradient(circle, rgba(27,36,32,0.9) 0%, transparent 70%)",
+              "radial-gradient(circle, color-mix(in srgb, var(--color-surface-700) 90%, transparent) 0%, transparent 70%)",
           }}
         />
       </div>
@@ -62,7 +67,7 @@ export function Hero() {
       <div className="hero-parallax relative w-full">
         <Container className="py-28 lg:py-36">
           <p
-            className="animate-fade-rise mb-8 font-mono text-[0.7rem] font-medium tracking-[0.28em] text-brass-500 uppercase"
+            className="animate-fade-rise mb-8 font-mono text-[0.7rem] font-medium tracking-[0.28em] text-accent-500 uppercase"
             style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}
           >
             {hero.eyebrow}
@@ -73,7 +78,7 @@ export function Hero() {
               immediate
               lines={[
                 hero.headingLead,
-                <span key="accent" className="text-gradient-brass">
+                <span key="accent" className="text-gradient-accent">
                   {hero.headingAccent}
                 </span>,
               ]}
@@ -92,7 +97,7 @@ export function Hero() {
             className="animate-fade-rise mt-11 flex flex-wrap items-center gap-4"
             style={{ "--reveal-delay": "0.8s" } as React.CSSProperties}
           >
-            <ButtonLink href={hero.primaryCta.href} variant="brass">
+            <ButtonLink href={hero.primaryCta.href} variant="accent">
               {hero.primaryCta.label}
             </ButtonLink>
             <ButtonLink href={hero.secondaryCta.href} variant="outline">
@@ -113,7 +118,7 @@ export function Hero() {
           className="animate-fade-rise"
           style={{ "--reveal-delay": "1.4s" } as React.CSSProperties}
         >
-          <span className="animate-nudge block text-brass-500/70">
+          <span className="animate-nudge block text-accent-500/70">
             <svg
               viewBox="0 0 24 24"
               fill="none"

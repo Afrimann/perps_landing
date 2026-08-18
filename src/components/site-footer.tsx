@@ -12,7 +12,7 @@ import {
 
 function ColumnHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="font-mono text-[0.68rem] font-medium tracking-[0.28em] text-brass-500 uppercase">
+    <h2 className="font-mono text-[0.68rem] font-medium tracking-[0.28em] text-accent-500 uppercase">
       {children}
     </h2>
   );
@@ -22,14 +22,14 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-white/8 bg-ink-950">
+    <footer className="mt-auto border-t border-white/8 bg-surface-950">
       <Container className="py-20">
         {/* Contact and Donations carry long strings (an email, an account
             name), so they get more of the row than the link columns. */}
         <div className="grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-[1fr_0.7fr_1.15fr_1.15fr]">
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3.5">
-              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-brass-500/40 font-display text-[0.8rem] font-semibold text-brass-300">
+              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-accent-500/40 font-display text-[0.8rem] font-semibold text-accent-300">
                 {site.shortName}
               </span>
             </div>
@@ -142,7 +142,7 @@ export function SiteFooter() {
               </div>
               <div>
                 <dt className="text-stone-500">Account number</dt>
-                <dd className="mt-1 font-mono tracking-[0.14em] text-brass-300 tabular">
+                <dd className="mt-1 font-mono tracking-[0.14em] text-accent-300 tabular">
                   {bankDetails.accountNumber}
                 </dd>
               </div>
@@ -150,7 +150,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/8 pt-8 text-xs text-stone-600 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/8 pt-8 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.name}. All rights reserved.
           </p>

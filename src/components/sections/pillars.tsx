@@ -10,7 +10,7 @@ import { pillars, pillarsSection } from "@/content/pillars";
 
 export function Pillars() {
   return (
-    <section id="pillars" className="relative bg-ink-900 py-28 lg:py-36">
+    <section id="pillars" className="relative bg-surface-900 py-28 lg:py-36">
       <Container>
         <SectionHeading
           eyebrow={pillarsSection.eyebrow}
@@ -26,8 +26,8 @@ export function Pillars() {
         >
           {pillars.map((pillar, index) => (
             <StaggerItem key={pillar.title} as="li" className="group">
-              <TiltCard className="h-full rounded-2xl border border-white/8 bg-ink-800 p-8 transition-colors duration-500 hover:border-brass-500/40">
-                <span className="grid size-12 place-items-center rounded-xl border border-brass-500/30 bg-brass-500/8 text-brass-400">
+              <TiltCard className="h-full rounded-2xl border border-white/8 bg-surface-800 p-8 transition-colors duration-500 hover:border-accent-500/40">
+                <span className="grid size-12 place-items-center rounded-xl border border-accent-500/30 bg-accent-500/8 text-accent-400">
                   <PillarIcon
                     name={pillar.icon}
                     className="size-6"

@@ -40,7 +40,7 @@ export const storyBlocks: Block[] = [
   },
   {
     type: "heading",
-    text: "A compassion that did not begin that day",
+    text: "A Compassion That Did Not Begin That Day",
   },
   {
     type: "paragraph",
@@ -48,7 +48,7 @@ export const storyBlocks: Block[] = [
   },
   {
     type: "heading",
-    text: "2013: a pageant, and what it was really for",
+    text: "2013: A Pageant, and What It Was Really For",
   },
   {
     type: "paragraph",
@@ -81,7 +81,7 @@ export const storyBlocks: Block[] = [
   },
   {
     type: "heading",
-    text: "What the town saw",
+    text: "What the Town Saw",
   },
   {
     type: "paragraph",
@@ -93,7 +93,7 @@ export const storyBlocks: Block[] = [
   },
   {
     type: "heading",
-    text: "From one pageant to a foundation",
+    text: "From One Pageant to a Foundation",
   },
   {
     type: "paragraph",
@@ -103,7 +103,7 @@ export const storyBlocks: Block[] = [
 
 export const story = {
   eyebrow: "Our story",
-  heading: "It began with the girls who were not in school",
+  heading: "It Began with the Girls Who Were Not in School",
 
   /** Condensed version — the home page section. */
   teaser: [
@@ -118,22 +118,22 @@ export const story = {
   milestones: [
     {
       year: "2013",
-      title: "The first pageant",
+      title: "The First Pageant",
       body: "A pageant for the young women of the ghetto, built around girl-child education — organised at a point when the founder had almost nothing of her own.",
     },
     {
       year: "2023",
-      title: "Cash gifts to street hawkers",
+      title: "Cash Gifts to Street Hawkers",
       body: "Direct cash support placed into the hands of young people hawking on the roadside, at the point of need.",
     },
     {
       year: "2024",
-      title: "Feeding 1,000 widows",
+      title: "Feeding 1,000 Widows",
       body: "Operation Feeding brought a thousand widows together to be fed and provisioned in one gathering.",
     },
     {
       year: "2025",
-      title: "3,000 widows and single mothers",
+      title: "3,000 Widows and Single Mothers",
       body: "Foodstuffs shared with three thousand widows and single mothers across a number of different communities.",
     },
   ],

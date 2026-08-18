@@ -14,7 +14,7 @@ function Wordmark({ onClick }: { onClick?: () => void }) {
       className="group flex items-center gap-3.5"
       aria-label={`${site.name} — home`}
     >
-      <span className="relative grid size-11 shrink-0 place-items-center rounded-full border border-brass-500/40 font-display text-[0.8rem] font-semibold text-brass-300 transition-colors duration-300 group-hover:border-brass-400">
+      <span className="relative grid size-11 shrink-0 place-items-center rounded-full border border-accent-500/40 font-display text-[0.8rem] font-semibold text-accent-300 transition-colors duration-300 group-hover:border-accent-400">
         {site.shortName}
       </span>
       <span className="font-display text-[1.05rem] leading-none font-medium tracking-tight text-white">
@@ -70,11 +70,23 @@ export function SiteHeader() {
         className="absolute top-0 h-6 w-px"
       />
 
+      {/* The bar is ALWAYS emerald, never transparent.
+
+          This is `sticky`, not `fixed`, so at scroll-top it is not floating
+          over the hero — it occupies its own 80px band in flow, and whatever
+          sits behind it is the BODY background. That background is paper, so
+          a transparent bar rendered white wordmark and white nav links on
+          cream: present in the DOM, invisible on screen, and only appearing
+          once scrolling swapped in the emerald.
+
+          Scrolling now changes only the treatment — translucent with a blur
+          and a hairline, so content passing underneath is felt rather than
+          hidden — never whether the bar is there at all. */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-500 ${
+        className={`sticky top-0 z-50 border-b transition-all duration-500 ${
           scrolled || open
-            ? "border-b border-white/8 bg-ink-950/85 backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent"
+            ? "border-white/8 bg-surface-950/85 backdrop-blur-xl"
+            : "border-transparent bg-surface-950"
         }`}
       >
       <Container>
@@ -89,7 +101,7 @@ export function SiteHeader() {
                 className="group relative py-1 text-[0.9rem] text-stone-300 transition-colors duration-300 hover:text-white"
               >
                 {link.label}
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-brass-500 transition-all duration-300 group-hover:w-full" />
+                <span className="absolute bottom-0 left-0 h-px w-0 bg-accent-500 transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </nav>
@@ -97,7 +109,7 @@ export function SiteHeader() {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               href="/#give"
-              className="rounded-full bg-brass-500 px-6 py-2.5 font-mono text-[0.7rem] font-semibold tracking-[0.16em] text-ink-950 uppercase transition-colors duration-300 hover:bg-brass-400"
+              className="rounded-full bg-accent-500 px-6 py-2.5 font-mono text-[0.7rem] font-semibold tracking-[0.16em] text-surface-950 uppercase transition-colors duration-300 hover:bg-accent-400"
             >
               Donate
             </Link>
@@ -138,7 +150,7 @@ export function SiteHeader() {
           id="mobile-menu"
           data-open={open}
           inert={!open}
-          className="menu-collapse border-t border-white/8 bg-ink-950 lg:hidden"
+          className="menu-collapse border-t border-white/8 bg-surface-950 lg:hidden"
         >
           <div className="overflow-hidden">
             <Container className="py-7">
@@ -148,7 +160,7 @@ export function SiteHeader() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-brass-300"
+                    className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-accent-300"
                   >
                     {link.label}
                   </Link>
@@ -156,7 +168,7 @@ export function SiteHeader() {
                 <Link
                   href="/#give"
                   onClick={() => setOpen(false)}
-                  className="mt-7 inline-flex items-center justify-center rounded-full bg-brass-500 px-6 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-ink-950 uppercase"
+                  className="mt-7 inline-flex items-center justify-center rounded-full bg-accent-500 px-6 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-surface-950 uppercase"
                 >
                   Donate
                 </Link>

@@ -5,7 +5,7 @@ import { about, registration } from "@/content/site";
 
 export function About() {
   return (
-    <section id="about" className="bg-ivory py-28 lg:py-36">
+    <section id="about" className="bg-paper py-28 lg:py-36">
       <Container>
         <SectionHeading eyebrow={about.eyebrow} tone="light" align="center">
           {about.heading}
@@ -23,11 +23,11 @@ export function About() {
 
         <div className="mt-20 grid gap-6 lg:grid-cols-2">
           <Reveal>
-            <article className="h-full rounded-3xl border border-brass-500/30 bg-gradient-to-br from-white to-brass-200/20 p-9 lg:p-11">
+            <article className="h-full rounded-3xl border border-accent-500/30 bg-gradient-to-br from-white to-accent-200/20 p-9 lg:p-11">
               <h3 className="font-display text-2xl text-stone-900">
                 {about.mission.title}
               </h3>
-              <span className="mt-5 block h-px w-16 bg-brass-500/50" />
+              <span className="mt-5 block h-px w-16 bg-accent-500/50" />
               <p className="mt-6 text-[1.02rem] leading-relaxed text-stone-600">
                 {about.mission.body}
               </p>
@@ -39,7 +39,7 @@ export function About() {
               <h3 className="font-display text-2xl text-stone-900">
                 {about.aim.title}
               </h3>
-              <span className="mt-5 block h-px w-16 bg-brass-500/50" />
+              <span className="mt-5 block h-px w-16 bg-accent-500/50" />
 
               <StaggerGroup as="ul" className="mt-6 space-y-4">
                 {about.aim.points.map((point) => (
@@ -50,7 +50,7 @@ export function About() {
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-2 size-1.5 shrink-0 rounded-full bg-brass-500"
+                      className="mt-2 size-1.5 shrink-0 rounded-full bg-accent-500"
                     />
                     {point}
                   </StaggerItem>
@@ -69,13 +69,13 @@ export function About() {
         <Reveal delay={0.1}>
           <div className="mt-12 flex justify-center">
             {registration.cacNumber ? (
-              <p className="inline-flex items-center gap-3 rounded-full border border-brass-500/40 bg-brass-200/25 px-6 py-3 text-sm text-stone-700">
+              <p className="inline-flex items-center gap-3 rounded-full border border-accent-500/40 bg-accent-200/25 px-6 py-3 text-sm text-stone-700">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"
-                  className="size-4 text-brass-600"
+                  className="size-4 text-accent-600"
                   aria-hidden="true"
                 >
                   <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" />

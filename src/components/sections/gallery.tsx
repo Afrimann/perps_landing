@@ -40,7 +40,7 @@ function Tile({
       onClick={() => onOpen(index)}
       data-reveal=""
       style={{ "--reveal-delay": `${(index % 3) * 0.08}s` } as React.CSSProperties}
-      className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/8 bg-ink-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brass-400"
+      className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/8 bg-surface-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
       aria-label={`Open image: ${photo.alt}`}
     >
       <Image
@@ -56,13 +56,13 @@ function Tile({
       {/* Brass wash on hover — the only colour the gallery adds. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/10 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-95"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-950/80 via-surface-950/10 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-95"
       />
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 p-5 text-left opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
       >
-        <span className="font-mono text-[0.62rem] tracking-[0.16em] text-brass-300 uppercase">
+        <span className="font-mono text-[0.62rem] tracking-[0.16em] text-accent-300 uppercase">
           View
         </span>
       </span>
@@ -97,7 +97,7 @@ export function Gallery() {
   const visible = items.slice(0, shown);
 
   return (
-    <section id="gallery" className="relative bg-ink-950 py-28 lg:py-36">
+    <section id="gallery" className="relative bg-surface-950 py-28 lg:py-36">
       <Container>
         <SectionHeading
           eyebrow={gallerySection.eyebrow}
@@ -122,7 +122,7 @@ export function Gallery() {
               aria-pressed={strand === option.id}
               className={`rounded-full border px-5 py-2 font-mono text-[0.68rem] tracking-[0.12em] uppercase transition-colors duration-300 ${
                 strand === option.id
-                  ? "border-brass-500 bg-brass-500/15 text-brass-300"
+                  ? "border-accent-500 bg-accent-500/15 text-accent-300"
                   : "border-white/12 text-stone-500 hover:border-white/25 hover:text-stone-300"
               }`}
             >
@@ -145,7 +145,7 @@ export function Gallery() {
             <button
               type="button"
               onClick={() => setShown((current) => current + PAGE)}
-              className="rounded-full border border-brass-500/60 px-7 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-brass-300 uppercase transition-colors duration-300 hover:border-brass-400 hover:text-brass-200"
+              className="rounded-full border border-accent-500/60 px-7 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-accent-300 uppercase transition-colors duration-300 hover:border-accent-400 hover:text-accent-200"
             >
               Show more ({items.length - shown})
             </button>

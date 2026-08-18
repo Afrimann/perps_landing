@@ -108,12 +108,15 @@ export function ContactChannels({
         const Icon = channel.icon;
 
         const shell = channel.primary
-          ? "border-brass-500/45 bg-gradient-to-br from-white to-brass-200/25 hover:border-brass-500"
+          ? "border-accent-500/45 bg-gradient-to-br from-white to-accent-200/25 hover:border-accent-500"
           : dark
-            ? "border-white/10 bg-ink-800/70 hover:border-brass-500/45"
-            : "border-stone-300/70 bg-white hover:border-brass-500/50";
+            ? "border-white/10 bg-surface-800/70 hover:border-accent-500/45"
+            : "border-stone-300/70 bg-white hover:border-accent-500/50";
 
-        const labelColor = dark && !channel.primary ? "text-stone-500" : "text-stone-500";
+        /* Both arms of this were stone-500 before, which made the ternary a
+           no-op and left the label at ~3.4:1 on the white cards. */
+        const labelColor =
+          dark && !channel.primary ? "text-stone-500" : "text-stone-600";
         const valueColor =
           dark && !channel.primary ? "text-white" : "text-stone-900";
         const detailColor =
@@ -124,9 +127,9 @@ export function ContactChannels({
             <span
               className={`grid size-11 place-items-center rounded-xl ${
                 channel.primary
-                  ? "bg-brass-500/20 text-brass-600"
+                  ? "bg-accent-500/20 text-accent-600"
                   : dark
-                    ? "bg-white/6 text-brass-300"
+                    ? "bg-white/6 text-accent-300"
                     : "bg-stone-100 text-stone-600"
               }`}
             >
@@ -146,7 +149,7 @@ export function ContactChannels({
             <p className={`mt-3 grow text-[0.88rem] leading-relaxed ${detailColor}`}>
               {channel.detail}
             </p>
-            <span className="mt-6 inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-[0.14em] text-brass-600 uppercase transition-all duration-300 group-hover:gap-3">
+            <span className="mt-6 inline-flex items-center gap-1.5 font-mono text-[0.68rem] tracking-[0.14em] text-accent-600 uppercase transition-all duration-300 group-hover:gap-3">
               {channel.primary ? "Start application" : "Open"}
               <span aria-hidden="true">→</span>
             </span>
@@ -180,7 +183,7 @@ export function ContactChannels({
 
 export function Contact() {
   return (
-    <section id="contact" className="bg-ivory-dim py-28 lg:py-36">
+    <section id="contact" className="bg-paper py-28 lg:py-36">
       <Container>
         <SectionHeading
           eyebrow={contactSection.eyebrow}

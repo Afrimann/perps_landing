@@ -55,11 +55,11 @@ export default async function ActivityPage({
           <ActivityVisual activity={activity} sizes="100vw" preload />
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ivory to-transparent"
+            className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-paper to-transparent"
           />
         </div>
 
-        <article className="bg-ivory pb-24">
+        <article className="bg-paper pb-24">
           <Container>
             <div className="mx-auto max-w-[68ch]">
               <ViewTransition name={`activity-title-${activity.slug}`}>
@@ -82,16 +82,16 @@ export default async function ActivityPage({
                 <span>{activity.readingMinutes} min read</span>
               </div>
 
-              <span className="mt-8 block h-px w-24 bg-gradient-to-r from-brass-500 to-transparent" />
+              <span className="mt-8 block h-px w-24 bg-gradient-to-r from-accent-500 to-transparent" />
 
               <ProseBlocks blocks={activity.body} className="mt-10" />
 
               {activity.images.length > 1 ? (
                 <section className="mt-16">
                   <h2 className="font-display text-[1.5rem] text-stone-900">
-                    From the day
+                    From the Day
                   </h2>
-                  <span className="mt-4 block h-px w-20 bg-gradient-to-r from-brass-500 to-transparent" />
+                  <span className="mt-4 block h-px w-20 bg-gradient-to-r from-accent-500 to-transparent" />
                   <ul className="mt-8 grid gap-4 sm:grid-cols-2">
                     {activity.images.map((photo) => (
                       <li
@@ -127,7 +127,7 @@ export default async function ActivityPage({
                 </Link>
                 <Link
                   href="/#give"
-                  className="font-mono text-[0.7rem] tracking-[0.14em] text-brass-600 uppercase transition-colors hover:text-brass-500"
+                  className="font-mono text-[0.7rem] tracking-[0.14em] text-accent-600 uppercase transition-colors hover:text-accent-500"
                 >
                   Support this work
                 </Link>
@@ -137,12 +137,12 @@ export default async function ActivityPage({
         </article>
 
         {related.length > 0 ? (
-          <section className="bg-ivory-dim py-20 lg:py-24">
+          <section className="bg-paper-dim py-20 lg:py-24">
             <Container>
               <h2 className="font-display text-[1.75rem] text-stone-900">
-                Related activities
+                Related Activities
               </h2>
-              <span className="mt-5 block h-px w-24 bg-gradient-to-r from-brass-500 to-transparent" />
+              <span className="mt-5 block h-px w-24 bg-gradient-to-r from-accent-500 to-transparent" />
 
               <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {related.map((item) => (
