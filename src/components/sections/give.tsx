@@ -1,6 +1,8 @@
 "use client";
 
+import { motion } from "motion/react";
 import { useState } from "react";
+import { EASE } from "@/components/motion/springs";
 import { Container } from "@/components/ui/container";
 import { Counter, MaskedLines, Reveal } from "@/components/motion/primitives";
 import { bankDetails, contact, give } from "@/content/site";
@@ -106,14 +108,17 @@ export function Give() {
                   ₦
                 </span>
                 {/* `key` on the amount remounts the node whenever the figure
-                    changes, which restarts the CSS animation — the same
-                    trick the motion version used to retrigger its own. */}
-                <span
+                    changes, which restarts the entrance — the slider drags
+                    continuously, so the tick has to retrigger per value. */}
+                <motion.span
                   key={amount}
-                  className="animate-amount-tick font-display text-4xl text-white tabular sm:text-5xl"
+                  initial={{ opacity: 0.4, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, ease: EASE }}
+                  className="font-display text-4xl text-white tabular sm:text-5xl"
                 >
                   {amount.toLocaleString("en-NG")}
-                </span>
+                </motion.span>
               </div>
 
               <label className="mt-8 block">
