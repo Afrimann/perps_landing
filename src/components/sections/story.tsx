@@ -65,20 +65,27 @@ export function Story() {
           {/* Milestone rail — a single brass line with years hung off it. */}
           <Reveal delay={0.15}>
             <div className="relative">
-              <div className="relative overflow-hidden rounded-3xl border border-white/8">
-                <Image
-                  src={photos.footballTeam.src}
-                  alt={photos.footballTeam.alt}
-                  width={photos.footballTeam.width}
-                  height={photos.footballTeam.height}
-                  sizes="(min-width: 1024px) 46vw, 92vw"
-                  className="h-auto w-full object-cover"
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/25 to-transparent"
-                />
-              </div>
+              {/* Capped height, no border: the photo reads as part of the
+                  dark ground rather than a framed panel, and its lower edge
+                  dissolves into the section rather than ending at a hard
+                  line.
+
+                  Width is capped at the source file's own resolution
+                  (485px) rather than stretched to fill the column. The
+                  source is a compressed forward, not a camera original —
+                  rendering it any wider forces the browser to upscale past
+                  its real pixels, which is what reads as blur. Capping the
+                  box is the only fix code can make; more detail than the
+                  file has is not recoverable. */}
+              <Image
+                src={photos.pageant.src}
+                alt={photos.pageant.alt}
+                width={photos.pageant.width}
+                height={photos.pageant.height}
+                sizes="(min-width: 460px) 420px, 92vw"
+                quality={75}
+                className="fade-bottom h-auto max-h-[420px] w-full max-w-[420px] rounded-t-3xl object-cover object-top"
+              />
 
               <StaggerGroup
                 as="ul"

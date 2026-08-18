@@ -56,6 +56,14 @@ export function SiteFooter() {
               ))}
               <li>
                 <Link
+                  href="/#team"
+                  className="text-stone-400 transition-colors hover:text-white"
+                >
+                  Our Team
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/activities"
                   className="text-stone-400 transition-colors hover:text-white"
                 >

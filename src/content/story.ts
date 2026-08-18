@@ -13,6 +13,7 @@
  * ─────────────────────────────────────────────────────────────────────────
  */
 import type { Block } from "./blocks";
+import { photos, type Photo } from "./photos";
 
 /** The full account — rendered on /story. */
 export const storyBlocks: Block[] = [
@@ -143,15 +144,10 @@ export const story = {
   },
 } as const;
 
-/**
- * The founder. `photo` is intentionally null — no portrait has been supplied
- * that is confirmed to be of the founder, and captioning an unidentified
- * face as the founder would be a fabrication. Supply one and the profile
- * renders it.
- */
+/** The founder. */
 export const founder = {
   name: "Naj Yonwuren",
   role: "Founder & Chief Executive",
-  photo: null as { src: string; alt: string; width: number; height: number } | null,
+  photo: photos.founder as Photo | null,
   bio: "Founder of the Yonwuren Naj Foundation. She began this work as a teenager, with a pageant for girls in her own neighbourhood who had been shut out of school, and has built it since into a foundation working across education, relief and elder care in Delta State.",
 } as const;

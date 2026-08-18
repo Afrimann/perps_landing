@@ -148,3 +148,50 @@ export const contactSection = {
   heading: "Two ways to reach us",
   body: "Applications for our programmes go through the registration form, so that nothing is lost in a message thread. For questions, follow-ups and anything else, WhatsApp and email are open.",
 } as const;
+
+/**
+ * The welcome screen shown once per browser session before the site itself.
+ *
+ * The photograph is deliberately NOT in `photos.ts`: that catalogue feeds the
+ * gallery, and this frame is a dense crowd of reaching hands — exactly the
+ * kind the gallery excludes for dignity. Here it is the point, because the
+ * line it carries is about hands being met.
+ *
+ * No year or figure is asserted. The foundation's founding year has not been
+ * confirmed (2013 is the first pageant, not the registration), so the eyebrow
+ * states only where it works.
+ */
+export const splash = {
+  image: "/photos/splash.jpeg",
+  /* Empty alt: the photograph is decorative here — the heading beside it
+     already carries the meaning, and describing the crowd would make a
+     screen reader announce a scene the sighted user is not asked to read. */
+  imageAlt: "",
+  welcome: "Welcome to the",
+  name: "Yonwuren Naj Foundation",
+  /* Completes the sentence the heading begins. Drawn from the photograph
+     behind it: the founder placing provisions into a reaching hand. */
+  where: "where every hand that reaches is met.",
+  cue: "Click anywhere to continue",
+  enterLabel: "Enter the site",
+  /**
+   * Optional recorded instrumental. Leave null and the welcome music is
+   * composed in the browser (a music-box melody over a chord bed — see
+   * components/splash/welcome-sound.ts), which costs no download.
+   *
+   * To use a real track instead, drop the file in `public/audio/` and set
+   * this to e.g. "/audio/welcome.mp3". Nothing else changes. Keep it under
+   * roughly 1 MB and make sure the foundation holds a licence for it — an
+   * unlicensed track on a charity's front door is a real liability.
+   */
+  audio: null as string | null,
+  /**
+   * Browsers refuse audio until the visitor has interacted, so on most first
+   * visits the sound cannot start on its own. `soundHint` is the visible
+   * invitation for that case — without it the splash is simply silent and
+   * looks broken.
+   */
+  soundHint: "Tap for sound",
+  soundOnLabel: "Mute welcome sound",
+  soundOffLabel: "Play welcome sound",
+} as const;
