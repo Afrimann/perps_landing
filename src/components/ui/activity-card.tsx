@@ -27,7 +27,7 @@ export function ActivityVisual({
 }) {
   return (
     <ViewTransition name={`activity-${activity.slug}`}>
-      <div className={`absolute inset-0 overflow-hidden bg-ink-800 ${className}`}>
+      <div className={`absolute inset-0 overflow-hidden bg-surface-800 ${className}`}>
         <Image
           src={activity.cover.src}
           alt={activity.cover.alt}
@@ -88,8 +88,8 @@ export function ActivityCard({
 }) {
   const shell =
     tone === "dark"
-      ? "border-white/8 bg-ink-800 hover:border-brass-500/40"
-      : "border-stone-300/70 bg-white hover:border-brass-500/50";
+      ? "border-white/8 bg-surface-800 hover:border-accent-500/40"
+      : "border-stone-300/70 bg-white hover:border-accent-500/50";
   const title = tone === "dark" ? "text-white" : "text-stone-900";
   const body = tone === "dark" ? "text-stone-500" : "text-stone-600";
 
@@ -107,7 +107,7 @@ export function ActivityCard({
         {/* Scrim so the pill stays legible over any photograph. */}
         <span
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-ink-950/70 to-transparent"
+          className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-surface-950/70 to-transparent"
         />
         <span
           className={`absolute top-4 left-4 rounded-full px-3 py-1 font-mono text-[0.62rem] font-medium tracking-[0.12em] uppercase ring-1 ring-inset backdrop-blur-sm ${categoryTone[activity.category]}`}
@@ -118,7 +118,7 @@ export function ActivityCard({
 
       <div className="flex grow flex-col p-7">
         <h3
-          className={`font-display text-xl leading-snug transition-colors group-hover:text-brass-400 ${title}`}
+          className={`font-display text-xl leading-snug transition-colors group-hover:text-accent-400 ${title}`}
         >
           {activity.title}
         </h3>
@@ -129,7 +129,7 @@ export function ActivityCard({
 
         <div className="mt-6 space-y-4">
           <Meta activity={activity} />
-          <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.14em] text-brass-500 uppercase transition-all duration-300 group-hover:gap-3">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.14em] text-accent-500 uppercase transition-all duration-300 group-hover:gap-3">
             {activity.readingMinutes} min read
             <span aria-hidden="true">→</span>
           </span>

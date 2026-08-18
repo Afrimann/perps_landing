@@ -9,7 +9,7 @@ type Status = "idle" | "sending" | "sent";
 
 const inputBase =
   "w-full rounded-xl border bg-white px-4 py-3 text-[0.95rem] text-stone-900 transition-colors placeholder:text-stone-400 focus:outline-none";
-const inputIdle = "border-stone-300 focus:border-brass-500";
+const inputIdle = "border-stone-300 focus:border-accent-500";
 const inputError = "border-red-400 focus:border-red-500";
 
 function FieldControl({
@@ -124,9 +124,9 @@ export function ApplicationForm() {
       <Reveal>
         <div
           role="status"
-          className="rounded-3xl border border-brass-500/40 bg-gradient-to-br from-white to-brass-200/25 p-9 text-center lg:p-12"
+          className="rounded-3xl border border-accent-500/40 bg-gradient-to-br from-white to-accent-200/25 p-9 text-center lg:p-12"
         >
-          <span className="mx-auto grid size-14 place-items-center rounded-full bg-brass-500/15 text-brass-600">
+          <span className="mx-auto grid size-14 place-items-center rounded-full bg-accent-500/15 text-accent-600">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -194,7 +194,7 @@ export function ApplicationForm() {
               >
                 {field.label}
                 {field.required ? (
-                  <span className="ml-1 text-brass-600" aria-hidden="true">
+                  <span className="ml-1 text-accent-600" aria-hidden="true">
                     *
                   </span>
                 ) : null}
@@ -230,7 +230,7 @@ export function ApplicationForm() {
         <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
       </div>
 
-      <p className="mt-8 rounded-xl border border-stone-300/70 bg-ivory px-5 py-4 text-[0.85rem] leading-relaxed text-stone-600">
+      <p className="mt-8 rounded-xl border border-stone-300/70 bg-paper px-5 py-4 text-[0.85rem] leading-relaxed text-stone-600">
         {applyPage.documentsNote}
       </p>
 
@@ -242,7 +242,7 @@ export function ApplicationForm() {
             required
             aria-invalid={Boolean(errors.consent) || undefined}
             aria-describedby={errors.consent ? "consent-error" : undefined}
-            className="mt-1 size-4 shrink-0 accent-brass-500"
+            className="mt-1 size-4 shrink-0 accent-accent-500"
           />
           <span>{applyPage.consentLabel}</span>
         </label>
@@ -266,7 +266,7 @@ export function ApplicationForm() {
       <button
         type="submit"
         disabled={sending}
-        className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-brass-500 px-8 py-4 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-ink-950 uppercase transition-colors hover:bg-brass-400 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-accent-500 px-8 py-4 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-surface-950 uppercase transition-colors hover:bg-accent-400 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {sending ? applyPage.submittingLabel : applyPage.submitLabel}
       </button>

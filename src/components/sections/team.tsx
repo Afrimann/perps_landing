@@ -13,7 +13,7 @@ import { teamPhoto, teamPhotoCaption, teamSection } from "@/content/team";
  */
 export function Team() {
   return (
-    <section id="team" className="bg-ivory py-28 lg:py-36">
+    <section id="team" className="bg-paper py-28 lg:py-36">
       <Container>
         <SectionHeading
           eyebrow={teamSection.eyebrow}
@@ -24,7 +24,7 @@ export function Team() {
         </SectionHeading>
 
         <Reveal delay={0.1}>
-          <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-8 rounded-3xl border border-brass-500/30 bg-gradient-to-br from-white to-brass-200/20 p-8 text-center sm:flex-row sm:p-10 sm:text-left">
+          <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-8 rounded-3xl border border-accent-500/30 bg-gradient-to-br from-white to-accent-200/20 p-8 text-center sm:flex-row sm:p-10 sm:text-left">
             {founder.photo ? (
               <Image
                 src={founder.photo.src}
@@ -38,7 +38,7 @@ export function Team() {
             ) : (
               <span
                 aria-hidden="true"
-                className="grid h-56 w-56 shrink-0 place-items-center rounded-2xl border border-brass-500/40 font-display text-2xl text-brass-600 sm:h-64 sm:w-64"
+                className="grid h-56 w-56 shrink-0 place-items-center rounded-2xl border border-accent-500/40 font-display text-2xl text-accent-600 sm:h-64 sm:w-64"
               >
                 NY
               </span>
@@ -47,7 +47,7 @@ export function Team() {
               <h3 className="font-display text-2xl text-stone-900">
                 {founder.name}
               </h3>
-              <p className="mt-1.5 font-mono text-[0.68rem] tracking-[0.2em] text-brass-600 uppercase">
+              <p className="mt-1.5 font-mono text-[0.68rem] tracking-[0.2em] text-accent-600 uppercase">
                 {founder.role}
               </p>
               <p className="mt-6 leading-[1.85] text-stone-600">

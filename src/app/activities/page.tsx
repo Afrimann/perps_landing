@@ -21,7 +21,7 @@ export default function ActivitiesPage() {
       <SiteHeader />
 
       <main id="main">
-        <section className="bg-ink-950 pt-24 pb-20 lg:pt-32 lg:pb-24">
+        <section className="bg-surface-950 pt-24 pb-20 lg:pt-32 lg:pb-24">
           <Container>
             <SectionHeading
               eyebrow="Our work, documented"
@@ -34,7 +34,7 @@ export default function ActivitiesPage() {
           </Container>
         </section>
 
-        <section className="bg-ivory-dim py-20 lg:py-24">
+        <section className="bg-paper-dim py-20 lg:py-24">
           <Container>
             <StaggerGroup
               as="ul"

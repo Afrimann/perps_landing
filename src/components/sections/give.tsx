@@ -45,7 +45,7 @@ function CopyableRow({
         <button
           type="button"
           onClick={copy}
-          className="rounded-full border border-white/12 px-2.5 py-1 font-mono text-[0.6rem] tracking-[0.12em] text-stone-500 uppercase transition-colors hover:border-brass-500/50 hover:text-brass-300"
+          className="rounded-full border border-white/12 px-2.5 py-1 font-mono text-[0.6rem] tracking-[0.12em] text-stone-500 uppercase transition-colors hover:border-accent-500/50 hover:text-accent-300"
           aria-label={`Copy ${label}`}
         >
           {copied ? "Copied" : "Copy"}
@@ -61,14 +61,16 @@ export function Give() {
   return (
     <section
       id="give"
-      className="grain relative overflow-hidden bg-ink-900 py-28 lg:py-36"
+      className="grain relative overflow-hidden bg-surface-900 py-28 lg:py-36"
     >
       <div
         aria-hidden="true"
         className="animate-drift pointer-events-none absolute -top-1/4 left-1/2 h-[60vh] w-[80vw] rounded-full opacity-35"
         style={{
+          /* Mixed from the token, not a literal rgba — see the note on the
+             matching washes in hero.tsx. */
           background:
-            "radial-gradient(circle, rgba(168,122,34,0.5) 0%, transparent 65%)",
+            "radial-gradient(circle, color-mix(in srgb, var(--color-accent-600) 50%, transparent) 0%, transparent 65%)",
         }}
       />
 
@@ -78,7 +80,7 @@ export function Give() {
             <MaskedLines
               lines={[
                 give.headingLead,
-                <span key="a" className="text-gradient-brass">
+                <span key="a" className="text-gradient-accent">
                   {give.headingAccent}
                 </span>,
               ]}
@@ -94,8 +96,8 @@ export function Give() {
         <div className="mt-16 grid items-start gap-6 lg:grid-cols-2">
           {/* ── Calculator ── */}
           <Reveal>
-            <div className="rounded-3xl border border-white/8 bg-ink-800/80 p-8 backdrop-blur lg:p-10">
-              <p className="font-mono text-[0.68rem] tracking-[0.24em] text-brass-500 uppercase">
+            <div className="rounded-3xl border border-white/8 bg-surface-800/80 p-8 backdrop-blur lg:p-10">
+              <p className="font-mono text-[0.68rem] tracking-[0.24em] text-accent-500 uppercase">
                 What your gift can do
               </p>
 
@@ -123,7 +125,7 @@ export function Give() {
                   step={givingRange.step}
                   value={amount}
                   onChange={(event) => setAmount(Number(event.target.value))}
-                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-brass-500"
+                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-accent-500"
                 />
               </label>
 
@@ -135,7 +137,7 @@ export function Give() {
                     onClick={() => setAmount(preset)}
                     className={`rounded-full border px-4 py-2 font-mono text-[0.68rem] tracking-[0.1em] transition-colors ${
                       amount === preset
-                        ? "border-brass-500 bg-brass-500/15 text-brass-300"
+                        ? "border-accent-500 bg-accent-500/15 text-accent-300"
                         : "border-white/12 text-stone-500 hover:border-white/25 hover:text-stone-300"
                     }`}
                   >
@@ -155,7 +157,7 @@ export function Give() {
                       <span className="text-sm text-stone-400">
                         {count === 1 ? unit.one : unit.many}
                       </span>
-                      <span className="font-display text-2xl text-brass-300">
+                      <span className="font-display text-2xl text-accent-300">
                         <Counter to={count} duration={0.5} immediate />
                       </span>
                     </li>
@@ -163,7 +165,7 @@ export function Give() {
                 })}
               </ul>
 
-              <p className="mt-7 text-xs leading-relaxed text-stone-600">
+              <p className="mt-7 text-xs leading-relaxed text-stone-400">
                 Each line shows what this amount could cover on its own, not
                 all at once. Unit costs are working estimates pending the
                 foundation&rsquo;s confirmed figures.
@@ -173,8 +175,8 @@ export function Give() {
 
           {/* ── Transfer details ── */}
           <Reveal delay={0.12}>
-            <div className="rounded-3xl border border-brass-500/25 bg-gradient-to-br from-ink-800 to-ink-900 p-8 lg:p-10">
-              <p className="font-mono text-[0.68rem] tracking-[0.24em] text-brass-500 uppercase">
+            <div className="rounded-3xl border border-accent-500/25 bg-gradient-to-br from-surface-800 to-surface-900 p-8 lg:p-10">
+              <p className="font-mono text-[0.68rem] tracking-[0.24em] text-accent-500 uppercase">
                 Bank transfer
               </p>
 
@@ -199,13 +201,13 @@ export function Give() {
                 <div className="flex flex-wrap gap-x-8 gap-y-2 pt-1">
                   <a
                     href={contact.phoneHref}
-                    className="font-mono text-brass-300 transition-colors hover:text-brass-200"
+                    className="font-mono text-accent-300 transition-colors hover:text-accent-200"
                   >
                     {contact.phone}
                   </a>
                   <a
                     href={contact.emailHref}
-                    className="text-brass-300 transition-colors [overflow-wrap:anywhere] hover:text-brass-200"
+                    className="text-accent-300 transition-colors [overflow-wrap:anywhere] hover:text-accent-200"
                   >
                     {contact.email}
                   </a>

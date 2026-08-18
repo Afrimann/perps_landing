@@ -58,20 +58,28 @@ export const impactSection = {
     "Every programme is written up: what we set out to do, who it reached, and what we learned. Dated, located, and open to scrutiny.",
 } as const;
 
+/**
+ * Category pills need three hues that stay apart from each other AND from
+ * the emerald ground. Emerald is no longer available to them — it is the
+ * brand surface, so an emerald pill on a card reads as a hole rather than a
+ * label. Rose takes that slot: warm, clearly distinct from both sky and
+ * gold, and legible on either ground.
+ */
+
 /** Pill colours for a DARK ground — used over a card's image. */
 export const categoryTone: Record<ActivityCategory, string> = {
   "Schools & Youth": "bg-sky-400/20 text-sky-200 ring-sky-300/40",
-  "Community Relief": "bg-brass-500/20 text-brass-200 ring-brass-400/40",
+  "Community Relief": "bg-accent-500/20 text-accent-200 ring-accent-400/40",
   "Widows & Single Mothers":
-    "bg-emerald-400/20 text-emerald-200 ring-emerald-300/40",
+    "bg-rose-400/20 text-rose-200 ring-rose-300/40",
 };
 
-/** Pill colours for a LIGHT ground — the story page title block on ivory. */
+/** Pill colours for a LIGHT ground — the story page title block on paper. */
 export const categoryToneLight: Record<ActivityCategory, string> = {
   "Schools & Youth": "bg-sky-100 text-sky-800 ring-sky-700/20",
-  "Community Relief": "bg-brass-200/50 text-brass-700 ring-brass-600/25",
+  "Community Relief": "bg-accent-200/50 text-accent-700 ring-accent-600/25",
   "Widows & Single Mothers":
-    "bg-emerald-100 text-emerald-800 ring-emerald-700/20",
+    "bg-rose-100 text-rose-800 ring-rose-700/20",
 };
 
 export const activities: Activity[] = [

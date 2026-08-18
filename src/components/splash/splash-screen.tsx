@@ -137,7 +137,7 @@ export function SplashScreen() {
     <div
       ref={dialogRef}
       tabIndex={-1}
-      className="splash grain bg-ink-950 outline-none"
+      className="splash grain bg-surface-950 outline-none"
       data-closing={closing || undefined}
       role="dialog"
       aria-modal="true"
@@ -159,8 +159,8 @@ export function SplashScreen() {
         <div className="splash-duotone" />
         {/* Vertical wash keeps depth at the edges; the radial one sinks the
             middle far enough to carry display type at any viewport size. */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/72 to-ink-950/90" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-ink-950)_82%)]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-surface-950/72 to-surface-950/90" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-surface-950)_82%)]" />
         <div className="splash-bloom" />
         <div className="splash-sweep" />
       </div>
@@ -204,7 +204,7 @@ export function SplashScreen() {
           <span className="sr-only">{splash.enterLabel}</span>
           <span
             aria-hidden="true"
-            className="splash-breathe font-sans text-[0.62rem] font-medium tracking-[0.34em] text-stone-500 uppercase transition-colors duration-500 group-hover:text-brass-300"
+            className="splash-breathe font-sans text-[0.62rem] font-medium tracking-[0.34em] text-stone-500 uppercase transition-colors duration-500 group-hover:text-accent-300"
           >
             {splash.cue}
           </span>
@@ -216,7 +216,7 @@ export function SplashScreen() {
             strokeWidth="1.25"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="animate-nudge size-5 text-brass-500/70 transition-colors duration-500 group-hover:text-brass-300"
+            className="animate-nudge size-5 text-accent-500/70 transition-colors duration-500 group-hover:text-accent-300"
           >
             <path d="M12 5v13M6 12.5l6 6 6-6" />
           </svg>
@@ -240,7 +240,7 @@ export function SplashScreen() {
         type="button"
         onClick={toggleSound}
         aria-pressed={playing}
-        className="absolute right-5 bottom-5 inline-flex items-center gap-2.5 rounded-full bg-white/5 py-2.5 pr-4 pl-3 text-stone-400 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:text-brass-300 sm:right-8 sm:bottom-8"
+        className="absolute right-5 bottom-5 inline-flex items-center gap-2.5 rounded-full bg-white/5 py-2.5 pr-4 pl-3 text-stone-400 backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 hover:text-accent-300 sm:right-8 sm:bottom-8"
       >
         <span className="sr-only">
           {playing ? splash.soundOnLabel : splash.soundOffLabel}

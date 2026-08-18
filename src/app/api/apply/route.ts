@@ -132,26 +132,40 @@ function buildEmail(values: Values) {
     values.reason,
   ].join("\n");
 
+  /**
+   * Mail clients strip <style> blocks and do not resolve CSS custom
+   * properties, so these hex values MUST be literal — they cannot read the
+   * theme tokens. They are the one place in the codebase that has to be
+   * updated by hand when the palette changes, and the one place nobody looks,
+   * because it is only ever seen in the foundation's inbox.
+   *
+   * Kept in step with globals.css:
+   *   #1e2a24  stone-900   body text
+   *   #44534b  stone-700   heading
+   *   #7e8d85  stone-500   labels
+   *   #a87a22  accent-600  eyebrow
+   *   #e6e0d2  paper-dim   rules
+   */
   const html = `
-    <div style="font-family:ui-sans-serif,system-ui,sans-serif;color:#221f1c;max-width:640px">
+    <div style="font-family:ui-sans-serif,system-ui,sans-serif;color:#1e2a24;max-width:640px">
       <p style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#a87a22;margin:0 0 4px">
         ${escapeHtml(site.name)}
       </p>
-      <h1 style="font-size:20px;margin:0 0 20px">New programme application</h1>
+      <h1 style="font-size:20px;margin:0 0 20px;color:#44534b">New programme application</h1>
       <table cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;font-size:14px">
         ${rows
           .map(
             ([label, value]) => `
           <tr>
-            <td style="padding:8px 16px 8px 0;color:#857d74;white-space:nowrap;vertical-align:top;border-bottom:1px solid #eee">${escapeHtml(label)}</td>
-            <td style="padding:8px 0;font-weight:600;border-bottom:1px solid #eee">${escapeHtml(value)}</td>
+            <td style="padding:8px 16px 8px 0;color:#7e8d85;white-space:nowrap;vertical-align:top;border-bottom:1px solid #e6e0d2">${escapeHtml(label)}</td>
+            <td style="padding:8px 0;font-weight:600;border-bottom:1px solid #e6e0d2">${escapeHtml(value)}</td>
           </tr>`
           )
           .join("")}
       </table>
-      <h2 style="font-size:15px;margin:28px 0 8px">Why they are applying</h2>
+      <h2 style="font-size:15px;margin:28px 0 8px;color:#44534b">Why they are applying</h2>
       <p style="font-size:14px;line-height:1.7;white-space:pre-wrap;margin:0">${escapeHtml(values.reason)}</p>
-      <p style="font-size:12px;color:#857d74;margin:28px 0 0">
+      <p style="font-size:12px;color:#7e8d85;margin:28px 0 0">
         Reply to this email to reach ${escapeHtml(values.fullName)} directly.
       </p>
     </div>`;

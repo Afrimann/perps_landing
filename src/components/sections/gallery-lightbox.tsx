@@ -64,7 +64,7 @@ export function Lightbox({
       aria-modal="true"
       aria-label={photo.alt}
       data-closing={closing || undefined}
-      className="lightbox fixed inset-0 z-100 flex flex-col bg-ink-950/95 backdrop-blur-xl"
+      className="lightbox fixed inset-0 z-100 flex flex-col bg-surface-950/95 backdrop-blur-xl"
       onClick={requestClose}
       onTouchStart={(event) => {
         touchStart.current = event.changedTouches[0].clientX;
@@ -84,7 +84,7 @@ export function Lightbox({
           ref={closeRef}
           type="button"
           onClick={requestClose}
-          className="grid size-11 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-brass-400 hover:text-brass-300"
+          className="grid size-11 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-accent-400 hover:text-accent-300"
           aria-label="Close image viewer"
         >
           <svg
@@ -125,7 +125,7 @@ export function Lightbox({
         <button
           type="button"
           onClick={() => onStep(-1)}
-          className="grid size-12 shrink-0 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-brass-400 hover:text-brass-300"
+          className="grid size-12 shrink-0 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-accent-400 hover:text-accent-300"
           aria-label="Previous image"
         >
           <svg
@@ -148,7 +148,7 @@ export function Lightbox({
         <button
           type="button"
           onClick={() => onStep(1)}
-          className="grid size-12 shrink-0 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-brass-400 hover:text-brass-300"
+          className="grid size-12 shrink-0 place-items-center rounded-full border border-white/12 text-white transition-colors hover:border-accent-400 hover:text-accent-300"
           aria-label="Next image"
         >
           <svg

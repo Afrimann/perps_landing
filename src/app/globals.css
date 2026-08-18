@@ -1,37 +1,58 @@
 @import "tailwindcss";
 
-@theme {
-  /* ── Ground: near-black with a green undertone. Reads as black beside
-        brass, but is distinctly ours next to a pure-black reference. ── */
-  --color-ink-950: #070a09;
-  --color-ink-900: #0a0e0c;
-  --color-ink-800: #131a17;
-  --color-ink-700: #1b2420;
-  --color-ink-600: #2a3630;
-  --color-ink-500: #46564e;
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME — emerald, gold and paper.
 
-  /* ── Accent: metallic brass, deeper than a bright yellow-gold ── */
-  --color-brass-200: #f2dda6;
-  --color-brass-300: #e8c46a;
-  --color-brass-400: #d9ab47;
-  --color-brass-500: #c9962f;
-  --color-brass-600: #a87a22;
-  --color-brass-700: #7e5a19;
+   Named for the ROLE each colour plays, not the colour it happens to be.
+   The previous names (`ink`, `brass`) described a specific near-black and a
+   specific metal, so the day the palette changed every one of ~350 call
+   sites started lying about what it rendered. `surface` / `accent` / `paper`
+   survive the next change too.
+
+   Green carries the foundation's subject — growth, and a child kept in
+   school — and reads locally: Nigeria's flag is green-white-green. Gold is
+   retained from the previous palette for continuity and for the warmth a
+   pure green scheme lacks.
+
+   The page is LIGHT-dominant. Seven sections sit on paper, five on emerald.
+   A children's foundation reading as near-black throughout was the thing
+   being fixed.
+   ═══════════════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Surfaces: deep emerald. Anchors the hero, pillars, gallery, giving
+        band and footer. 950 is nearly black but unmistakably green, so the
+        dark bands read as a colour rather than an absence of one. ── */
+  --color-surface-950: #06251b;
+  --color-surface-900: #0a3327;
+  --color-surface-800: #0f4a38;
+  --color-surface-700: #14654b;
+  --color-surface-600: #1e7e60;
+  --color-surface-500: #35997a;
+
+  /* ── Accent: metallic gold, deeper than a bright yellow ── */
+  --color-accent-200: #f2dda6;
+  --color-accent-300: #e8c46a;
+  --color-accent-400: #d9ab47;
+  --color-accent-500: #c9962f;
+  --color-accent-600: #a87a22;
+  --color-accent-700: #7e5a19;
 
   /* ── Light grounds ── */
-  --color-ivory: #f7f4ec;
-  --color-ivory-dim: #efeadf;
+  --color-paper: #faf7f0;
+  --color-paper-dim: #f1ebdf;
 
-  /* ── Warm neutrals for text on light ── */
-  --color-stone-300: #c7c0b6;
-  --color-stone-400: #a29a90;
-  --color-stone-500: #857d74;
-  --color-stone-600: #6b6560;
-  --color-stone-700: #4a453f;
-  --color-stone-900: #221f1c;
+  /* ── Neutrals, tinted green so they sit inside the palette rather than
+        beside it. Luminance is deliberately matched to the greys these
+        replace, so every contrast ratio already reviewed still holds. ── */
+  --color-stone-300: #c6d0c9;
+  --color-stone-400: #a1aea6;
+  --color-stone-500: #7e8d85;
+  --color-stone-600: #63726a;
+  --color-stone-700: #44534b;
+  --color-stone-900: #1e2a24;
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bodoni), ui-serif, Georgia, serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -42,23 +63,32 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
-    color-scheme: dark;
+    /* The page is light-dominant now, so native controls — the select on the
+       application form especially — must render light. */
+    color-scheme: light;
+    /* Paints the overscroll gutter. Emerald rather than paper because the
+       page both begins (hero) and ends (footer) on a dark band, so a rubber
+       -band bounce at either end continues the section instead of flashing
+       cream against it. */
+    background-color: var(--color-surface-950);
   }
 
   body {
-    background-color: var(--color-ink-900);
-    color: var(--color-stone-300);
+    background-color: var(--color-paper);
+    color: var(--color-stone-700);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background-color: var(--color-brass-500);
-    color: var(--color-ink-950);
+    background-color: var(--color-accent-500);
+    color: var(--color-surface-950);
   }
 
+  /* accent-500 rather than 400: the ring has to stay visible on paper as
+     well as on emerald, and the lighter gold washed out against cream. */
   :focus-visible {
-    outline: 2px solid var(--color-brass-400);
+    outline: 2px solid var(--color-accent-500);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -86,12 +116,12 @@
     background-repeat: repeat;
   }
 
-  .text-gradient-brass {
+  .text-gradient-accent {
     background: linear-gradient(
       100deg,
-      var(--color-brass-300),
-      var(--color-brass-500) 45%,
-      var(--color-brass-200)
+      var(--color-accent-300),
+      var(--color-accent-500) 45%,
+      var(--color-accent-200)
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -351,7 +381,7 @@
   transition: opacity 0.3s;
   background: radial-gradient(
     340px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
-    rgba(232, 196, 106, 0.1),
+    color-mix(in srgb, var(--color-accent-300) 10%, transparent),
     transparent 65%
   );
 }
@@ -488,10 +518,10 @@ html.splash-open body {
   mix-blend-mode: color;
   background: linear-gradient(
     155deg,
-    #c9962f 0%,
-    #a87a22 30%,
-    #2a3630 68%,
-    #070a09 100%
+    var(--color-accent-500) 0%,
+    var(--color-accent-600) 30%,
+    var(--color-surface-700) 68%,
+    var(--color-surface-950) 100%
   );
 }
 
@@ -541,12 +571,12 @@ html.splash-open body {
 .splash-name {
   background: linear-gradient(
     100deg,
-    var(--color-brass-500) 0%,
-    var(--color-brass-300) 22%,
-    #fff4dc 38%,
-    var(--color-brass-300) 54%,
-    var(--color-brass-500) 78%,
-    var(--color-brass-400) 100%
+    var(--color-accent-500) 0%,
+    var(--color-accent-300) 22%,
+    var(--color-accent-200) 38%,
+    var(--color-accent-300) 54%,
+    var(--color-accent-500) 78%,
+    var(--color-accent-400) 100%
   );
   background-size: 240% 100%;
   -webkit-background-clip: text;
@@ -575,7 +605,7 @@ html.splash-open body {
   background: linear-gradient(
     100deg,
     transparent 42%,
-    rgba(255, 243, 216, 0.07) 50%,
+    color-mix(in srgb, var(--color-accent-200) 12%, transparent) 50%,
     transparent 58%
   );
   animation: splash-sweep 3.2s var(--ease-out-soft) 0.9s both;
@@ -593,7 +623,7 @@ html.splash-open body {
   pointer-events: none;
   background: radial-gradient(
     ellipse at center,
-    rgba(201, 150, 47, 0.16) 0%,
+    color-mix(in srgb, var(--color-accent-500) 16%, transparent) 0%,
     transparent 68%
   );
   animation: splash-rise 2.4s var(--ease-out-soft) 0.4s both;

@@ -13,6 +13,21 @@
  *  on purpose — an unverified statistic on a fundraising page is worse
  *  than an obvious gap.
  * ─────────────────────────────────────────────────────────────────────────
+ *
+ *  CAPITALISATION — headings are TITLE CASE, Chicago style: capitalise
+ *  everything except articles (a, an, the), coordinating conjunctions
+ *  (and, but, or) and prepositions under five letters (of, to, in, with,
+ *  for). So "It Began with the Girls Who Were Not in School".
+ *
+ *  This is a rule because the site previously used both cases at once, and
+ *  the same three programmes appeared as "Cash gifts to street hawkers" in
+ *  the story milestones and "Cash Gifts to Street Hawkers" on the activity
+ *  cards directly below them.
+ *
+ *  Two deliberate exceptions, both sentences rather than labels:
+ *    • a heading that is a full sentence ending in a full stop
+ *    • inline status text (applyPage.errorHeading) that is not a heading
+ * ─────────────────────────────────────────────────────────────────────────
  */
 
 /* VERIFIED */
@@ -94,7 +109,7 @@ export const hero = {
 /* DRAFT: about */
 export const about = {
   eyebrow: "Who we are",
-  heading: "A foundation built around one belief",
+  heading: "A Foundation Built Around One Belief",
   body: [
     "Yonwuren Naj Foundation was established to give young people a fair start. We work in communities where a missing school fee, an untreated illness or the absence of a mentor is enough to close a door permanently.",
     "We keep our work close to the ground. We partner with the schools, families and community leaders who already know which children are about to fall through — and we stay with those children rather than moving on to the next photograph.",
@@ -121,7 +136,7 @@ export const about = {
 /* DRAFT: purpose statement */
 export const purpose = {
   eyebrow: "Our purpose",
-  heading: "Building a legacy that outlasts us",
+  heading: "Building a Legacy That Outlasts Us",
   body: [
     "At the heart of this foundation is a single conviction: that potential is distributed evenly across every community, and opportunity is not. The distance between those two facts is the work.",
     "Our legacy will not be measured in events held or photographs taken, but in children who finished school, families who stayed standing, and communities that no longer need us in the same way.",
@@ -145,7 +160,7 @@ export const governance = {
 
 export const contactSection = {
   eyebrow: "Get in touch",
-  heading: "Two ways to reach us",
+  heading: "Two Ways to Reach Us",
   body: "Applications for our programmes go through the registration form, so that nothing is lost in a message thread. For questions, follow-ups and anything else, WhatsApp and email are open.",
 } as const;
 

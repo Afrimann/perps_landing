@@ -25,7 +25,7 @@ export default function StoryPage() {
 
       <main id="main">
         {/* Title over a real photograph, held well back so the type leads. */}
-        <section className="grain relative flex min-h-[62svh] items-end overflow-hidden bg-ink-950 pt-24 pb-16 lg:min-h-[70svh]">
+        <section className="grain relative flex min-h-[62svh] items-end overflow-hidden bg-surface-950 pt-24 pb-16 lg:min-h-[70svh]">
           <div aria-hidden="true" className="absolute inset-0">
             <Image
               src={photos.pageant.src}
@@ -36,12 +36,12 @@ export default function StoryPage() {
               sizes="100vw"
               className="object-contain object-[center_35%] opacity-40"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/80 to-ink-950/50" />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-surface-950/80 to-surface-950/50" />
           </div>
 
           <Container className="relative">
             <Reveal>
-              <p className="font-mono text-[0.7rem] font-medium tracking-[0.28em] text-brass-500 uppercase">
+              <p className="font-mono text-[0.7rem] font-medium tracking-[0.28em] text-accent-500 uppercase">
                 {story.eyebrow}
               </p>
             </Reveal>
@@ -51,12 +51,12 @@ export default function StoryPage() {
               </h1>
             </Reveal>
             <Reveal delay={0.16}>
-              <span className="mt-8 block h-px w-28 bg-gradient-to-r from-brass-500 to-transparent" />
+              <span className="mt-8 block h-px w-28 bg-gradient-to-r from-accent-500 to-transparent" />
             </Reveal>
           </Container>
         </section>
 
-        <article className="bg-ivory py-20 lg:py-28">
+        <article className="bg-paper py-20 lg:py-28">
           <Container>
             <div className="mx-auto max-w-[68ch]">
               <ProseBlocks blocks={storyBlocks} />
@@ -64,7 +64,7 @@ export default function StoryPage() {
               {/* Founder profile. The portrait renders only if one has been
                   supplied — captioning an unidentified face as the founder
                   would be a fabrication. */}
-              <aside className="mt-16 rounded-3xl border border-brass-500/30 bg-gradient-to-br from-white to-brass-200/20 p-8 lg:p-10">
+              <aside className="mt-16 rounded-3xl border border-accent-500/30 bg-gradient-to-br from-white to-accent-200/20 p-8 lg:p-10">
                 <div className="flex flex-wrap items-center gap-6">
                   {founder.photo ? (
                     <Image
@@ -78,7 +78,7 @@ export default function StoryPage() {
                   ) : (
                     <span
                       aria-hidden="true"
-                      className="grid size-24 shrink-0 place-items-center rounded-full border border-brass-500/40 font-display text-xl text-brass-600"
+                      className="grid size-24 shrink-0 place-items-center rounded-full border border-accent-500/40 font-display text-xl text-accent-600"
                     >
                       NY
                     </span>
@@ -87,7 +87,7 @@ export default function StoryPage() {
                     <p className="font-display text-2xl text-stone-900">
                       {founder.name}
                     </p>
-                    <p className="mt-1 font-mono text-[0.68rem] tracking-[0.2em] text-brass-600 uppercase">
+                    <p className="mt-1 font-mono text-[0.68rem] tracking-[0.2em] text-accent-600 uppercase">
                       {founder.role}
                     </p>
                   </div>
@@ -100,9 +100,9 @@ export default function StoryPage() {
               {/* Milestone rail, repeated here as the closing summary. */}
               <section className="mt-16">
                 <h2 className="font-display text-[1.75rem] text-stone-900">
-                  The years since
+                  The Years Since
                 </h2>
-                <span className="mt-5 block h-px w-24 bg-gradient-to-r from-brass-500 to-transparent" />
+                <span className="mt-5 block h-px w-24 bg-gradient-to-r from-accent-500 to-transparent" />
 
                 <StaggerGroup
                   as="ul"
@@ -116,9 +116,9 @@ export default function StoryPage() {
                     >
                       <span
                         aria-hidden="true"
-                        className="absolute top-2 -left-[2.28rem] size-2.5 rounded-full bg-brass-500 ring-4 ring-ivory"
+                        className="absolute top-2 -left-[2.28rem] size-2.5 rounded-full bg-accent-500 ring-4 ring-paper"
                       />
-                      <p className="font-mono text-[0.72rem] tracking-[0.22em] text-brass-600 tabular">
+                      <p className="font-mono text-[0.72rem] tracking-[0.22em] text-accent-600 tabular">
                         {milestone.year}
                       </p>
                       <h3 className="mt-2 font-display text-lg text-stone-900">
@@ -141,7 +141,7 @@ export default function StoryPage() {
                 </Link>
                 <Link
                   href="/#give"
-                  className="font-mono text-[0.7rem] tracking-[0.14em] text-brass-600 uppercase transition-colors hover:text-brass-500"
+                  className="font-mono text-[0.7rem] tracking-[0.14em] text-accent-600 uppercase transition-colors hover:text-accent-500"
                 >
                   Support this work
                 </Link>
@@ -150,7 +150,7 @@ export default function StoryPage() {
           </Container>
         </article>
 
-        <section className="bg-ivory-dim py-20 lg:py-24">
+        <section className="bg-paper-dim py-20 lg:py-24">
           <Container>
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="font-display text-[1.9rem] leading-snug text-balance text-stone-900 sm:text-[2.3rem]">
@@ -162,10 +162,10 @@ export default function StoryPage() {
                 receives applications through one form.
               </p>
               <div className="mt-10 flex flex-wrap justify-center gap-4">
-                <ButtonLink href="/apply" variant="brass">
+                <ButtonLink href="/apply" variant="accent">
                   Apply for a programme
                 </ButtonLink>
-                <ButtonLink href="/#give" variant="ghost-dark">
+                <ButtonLink href="/#give" variant="ghost">
                   Support the work
                 </ButtonLink>
               </div>
