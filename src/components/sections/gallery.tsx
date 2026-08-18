@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useMemo, useState } from "react";
+import { EASE, SPRING, VIEWPORT } from "@/components/motion/springs";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import {
@@ -35,11 +37,20 @@ function Tile({
   onOpen: (index: number) => void;
 }) {
   return (
-    <button
+    <motion.button
       type="button"
       onClick={() => onOpen(index)}
-      data-reveal=""
-      style={{ "--reveal-delay": `${(index % 3) * 0.08}s` } as React.CSSProperties}
+      /* Shares its id with the figure in the viewer, so opening an image
+         moves this element rather than fading a copy in over it. */
+      layoutId={`photo-${photo.src}`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={VIEWPORT}
+      /* Staggered by column rather than by absolute index: this is a masonry
+         layout, so neighbouring indices are not neighbouring on screen and a
+         linear delay reads as a random scatter. */
+      transition={{ ...SPRING, delay: (index % 3) * 0.08 }}
+      whileHover={{ y: -4, transition: { duration: 0.3, ease: EASE } }}
       className="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-2xl border border-white/8 bg-surface-800 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
       aria-label={`Open image: ${photo.alt}`}
     >
@@ -53,7 +64,7 @@ function Tile({
         className="h-auto w-full scale-[1.02] object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
       />
 
-      {/* Brass wash on hover — the only colour the gallery adds. */}
+      {/* Gold wash on hover — the only colour the gallery adds. */}
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-950/80 via-surface-950/10 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-95"
@@ -66,7 +77,7 @@ function Tile({
           View
         </span>
       </span>
-    </button>
+    </motion.button>
   );
 }
 
@@ -153,9 +164,14 @@ export function Gallery() {
         ) : null}
       </Container>
 
-      {open !== null && items[open] ? (
-        <Lightbox items={items} index={open} onClose={close} onStep={step} />
-      ) : null}
+      {/* AnimatePresence keeps the viewer mounted long enough for its exit to
+          play, and is what lets the `layoutId` morph run in reverse on close
+          instead of the image simply vanishing. */}
+      <AnimatePresence>
+        {open !== null && items[open] ? (
+          <Lightbox items={items} index={open} onClose={close} onStep={step} />
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }

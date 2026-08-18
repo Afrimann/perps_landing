@@ -1,14 +1,24 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { splash } from "@/content/site";
+import { EASE } from "@/components/motion/springs";
 import { createWelcomeSound, type WelcomeSound } from "./welcome-sound";
 
 /** Matches the `.splash` exit transition in globals.css. */
 const EXIT_MS = 750;
 
 export const SPLASH_KEY = "ynf-splash-seen";
+
+/** Every line of the splash enters the same way; only the order differs. */
+const rise: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  shown: { opacity: 1, y: 0 },
+};
+
+const riseTransition = { duration: 1, ease: EASE };
 
 /**
  * The welcome screen, shown once per browser session.
@@ -37,6 +47,8 @@ export function SplashScreen() {
   const [closing, setClosing] = useState(false);
   /** Whether a tone is currently audible — drives the button's icon and state. */
   const [playing, setPlaying] = useState(false);
+
+  const reduced = useReducedMotion();
 
   const soundRef = useRef<WelcomeSound | null>(null);
   const mutedRef = useRef(false);
@@ -165,41 +177,56 @@ export function SplashScreen() {
         <div className="splash-sweep" />
       </div>
 
-      <div className="relative flex h-full flex-col items-center justify-center px-8 text-center">
+      {/* One orchestrated entrance rather than five hand-tuned delays. The
+          parent staggers its children, so reordering the splash never means
+          renumbering a chain of `--reveal-delay` values by hand. */}
+      <motion.div
+        className="relative flex h-full flex-col items-center justify-center px-8 text-center"
+        variants={{
+          hidden: {},
+          shown: { transition: { staggerChildren: 0.22, delayChildren: 0.3 } },
+        }}
+        initial="hidden"
+        animate="shown"
+      >
         <h1 className="max-w-5xl font-display leading-[1.02] tracking-[-0.025em] text-balance text-white">
-          <span
-            className="splash-rise block font-sans text-[0.66rem] font-medium tracking-[0.42em] text-stone-500 uppercase sm:text-[0.74rem]"
-            style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}
+          <motion.span
+            variants={rise}
+            transition={riseTransition}
+            className="block font-sans text-[0.66rem] font-medium tracking-[0.42em] text-stone-500 uppercase sm:text-[0.74rem]"
           >
             {splash.welcome}
-          </span>
-          <span
-            className="splash-rise splash-name mt-6 block text-[2.3rem] leading-[1.02] sm:text-[3.8rem] lg:text-[5.1rem]"
-            style={{ "--reveal-delay": "0.55s" } as React.CSSProperties}
+          </motion.span>
+          <motion.span
+            variants={rise}
+            transition={riseTransition}
+            className="splash-name mt-6 block text-[2.3rem] leading-[1.02] sm:text-[3.8rem] lg:text-[5.1rem]"
           >
             {splash.name}
-          </span>
+          </motion.span>
         </h1>
 
         {/* Sans, light and roomy rather than a display italic — the serif
             wordmark above is doing the expressive work, and a second
             decorative face directly under it reads as fussy. */}
-        <p
-          className="splash-rise mt-10 max-w-lg font-sans text-[0.98rem] leading-[1.75] font-light tracking-[0.01em] text-balance text-stone-400 sm:text-[1.1rem]"
-          style={{ "--reveal-delay": "0.95s" } as React.CSSProperties}
+        <motion.p
+          variants={rise}
+          transition={riseTransition}
+          className="mt-10 max-w-lg font-sans text-[0.98rem] leading-[1.75] font-light tracking-[0.01em] text-balance text-stone-400 sm:text-[1.1rem]"
         >
           {splash.where}
-        </p>
+        </motion.p>
 
         {/* A real button, so the splash is operable and announced for keyboard
             and screen-reader users. The whole backdrop is clickable too, which
             is what the visible cue describes. No ring, no plate — just the
             words and a mark that drifts. */}
-        <button
+        <motion.button
           type="button"
           onClick={dismiss}
-          className="splash-rise group mt-20 inline-flex flex-col items-center gap-5"
-          style={{ "--reveal-delay": "1.35s" } as React.CSSProperties}
+          variants={rise}
+          transition={riseTransition}
+          className="group mt-20 inline-flex flex-col items-center gap-5"
         >
           <span className="sr-only">{splash.enterLabel}</span>
           <span
@@ -208,7 +235,7 @@ export function SplashScreen() {
           >
             {splash.cue}
           </span>
-          <svg
+          <motion.svg
             aria-hidden="true"
             viewBox="0 0 24 24"
             fill="none"
@@ -216,12 +243,14 @@ export function SplashScreen() {
             strokeWidth="1.25"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="animate-nudge size-5 text-accent-500/70 transition-colors duration-500 group-hover:text-accent-300"
+            animate={reduced ? undefined : { y: [0, 9, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+            className="size-5 text-accent-500/70 transition-colors duration-500 group-hover:text-accent-300"
           >
             <path d="M12 5v13M6 12.5l6 6 6-6" />
-          </svg>
-        </button>
-      </div>
+          </motion.svg>
+        </motion.button>
+      </motion.div>
 
       {/* Sound control, splash-only.
 

@@ -1,6 +1,15 @@
 "use client";
 
 import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "motion/react";
+import {
   useEffect,
   useRef,
   useState,
@@ -8,22 +17,15 @@ import {
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
+import { EASE, SPRING_POINTER } from "./springs";
 
 /**
- * The three primitives that genuinely cannot be CSS: two are driven by live
- * pointer coordinates, one counts. Everything else on the site is a server
- * component in ./primitives.
+ * The pointer-driven and value-driven pieces.
  *
- * None of these use an animation library. They write transforms straight to
- * the node — no React state per frame, so a pointer move never re-renders.
+ * All three write through motion values rather than React state, so a pointer
+ * move or a counting frame never triggers a re-render — the DOM is updated
+ * off the React tree entirely.
  */
-
-function prefersReducedMotion() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
-}
 
 /**
  * Counts up to a number once scrolled into view. Only ever used for figures
@@ -48,53 +50,31 @@ export function Counter({
   immediate?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [inView, setInView] = useState(false);
+  const reduced = useReducedMotion();
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   const [display, setDisplay] = useState(0);
   const active = immediate || inView;
 
   useEffect(() => {
-    if (immediate) return;
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries[0].isIntersecting) return;
-        setInView(true);
-        observer.disconnect();
-      },
-      { rootMargin: "0px 0px -60px 0px" }
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [immediate]);
-
-  useEffect(() => {
     if (!active) return;
 
-    /* Reduced motion jumps to the final value on the first frame AFTER
-       mount rather than during render. Deriving it at render time would
-       make the server (which cannot know the preference) emit a different
-       number from the client, which is a hydration mismatch. */
-    if (prefersReducedMotion()) {
-      const jump = requestAnimationFrame(() => setDisplay(to));
-      return () => cancelAnimationFrame(jump);
+    /* Reduced motion lands on the final value a frame after mount rather
+       than during render. Deriving it at render time would make the server —
+       which cannot know the preference — emit a different number from the
+       client, which is a hydration mismatch. */
+    if (reduced) {
+      const frame = requestAnimationFrame(() => setDisplay(to));
+      return () => cancelAnimationFrame(frame);
     }
 
-    let frame = 0;
-    const start = performance.now();
+    const controls = animate(0, to, {
+      duration,
+      ease: EASE,
+      onUpdate: (value) => setDisplay(Math.round(value)),
+    });
 
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / (duration * 1000), 1);
-      // easeOutExpo — fast start, long settle, reads as "counting up"
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      setDisplay(Math.round(eased * to));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [active, to, duration]);
+    return () => controls.stop();
+  }, [active, to, duration, reduced]);
 
   return (
     <span ref={ref} className={`tabular ${className ?? ""}`}>
@@ -105,8 +85,9 @@ export function Counter({
 }
 
 /**
- * Button that drifts a few pixels toward the pointer and springs back.
- * Pointer-driven only — never fires for keyboard or touch users.
+ * Button that drifts toward the pointer and springs back on leave.
+ * Pointer-driven only — never fires for keyboard or touch users, for whom
+ * there is no cursor to be magnetic toward.
  */
 export function Magnetic({
   children,
@@ -118,35 +99,42 @@ export function Magnetic({
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
+  const reduced = useReducedMotion();
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, SPRING_POINTER);
+  const springY = useSpring(y, SPRING_POINTER);
 
   const onMove = (event: ReactPointerEvent<HTMLSpanElement>) => {
     const node = ref.current;
-    if (!node || event.pointerType !== "mouse" || prefersReducedMotion()) return;
+    if (!node || event.pointerType !== "mouse" || reduced) return;
     const rect = node.getBoundingClientRect();
-    const x = (event.clientX - (rect.left + rect.width / 2)) * strength;
-    const y = (event.clientY - (rect.top + rect.height / 2)) * strength;
-    node.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    x.set((event.clientX - (rect.left + rect.width / 2)) * strength);
+    y.set((event.clientY - (rect.top + rect.height / 2)) * strength);
   };
 
   const reset = () => {
-    if (ref.current) ref.current.style.transform = "";
+    x.set(0);
+    y.set(0);
   };
 
   return (
-    <span
+    <motion.span
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={reset}
-      className={`inline-block transition-transform duration-200 ease-out ${className ?? ""}`}
+      style={{ x: springX, y: springY }}
+      className={`inline-block ${className ?? ""}`}
     >
       {children}
-    </span>
+    </motion.span>
   );
 }
 
 /**
- * Card that tilts in 3D toward the pointer, with a brass sheen tracking the
- * cursor position. Disabled for reduced-motion and non-mouse input.
+ * Card that tilts in 3D toward the pointer, with a gold sheen tracking the
+ * cursor. Disabled for reduced-motion and for any non-mouse input.
  */
 export function TiltCard({
   children,
@@ -158,36 +146,57 @@ export function TiltCard({
   style?: CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  /* 0.5/0.5 is centre, so the card starts flat. */
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+
+  const springX = useSpring(px, SPRING_POINTER);
+  const springY = useSpring(py, SPRING_POINTER);
+
+  const rotateY = useTransform(springX, [0, 1], [-7, 7]);
+  const rotateX = useTransform(springY, [0, 1], [6, -6]);
+  const sheenX = useTransform(springX, [0, 1], ["0%", "100%"]);
+  const sheenY = useTransform(springY, [0, 1], ["0%", "100%"]);
+
+  const sheen = useTransform(
+    [sheenX, sheenY],
+    ([sx, sy]) =>
+      `radial-gradient(340px circle at ${sx} ${sy}, color-mix(in srgb, var(--color-accent-300) 12%, transparent), transparent 65%)`
+  );
 
   const onMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     const node = ref.current;
-    if (!node || event.pointerType !== "mouse" || prefersReducedMotion()) return;
+    if (!node || event.pointerType !== "mouse" || reduced) return;
     const rect = node.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width;
-    const py = (event.clientY - rect.top) / rect.height;
-    node.style.setProperty("--tilt-x", `${(0.5 - py) * 10}deg`);
-    node.style.setProperty("--tilt-y", `${(px - 0.5) * 12}deg`);
-    node.style.setProperty("--sheen-x", `${px * 100}%`);
-    node.style.setProperty("--sheen-y", `${py * 100}%`);
+    px.set((event.clientX - rect.left) / rect.width);
+    py.set((event.clientY - rect.top) / rect.height);
   };
 
   const reset = () => {
-    const node = ref.current;
-    if (!node) return;
-    node.style.removeProperty("--tilt-x");
-    node.style.removeProperty("--tilt-y");
+    px.set(0.5);
+    py.set(0.5);
   };
 
   return (
-    <div
+    <motion.div
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={reset}
-      style={style}
-      className={`tilt-card relative ${className ?? ""}`}
+      style={
+        reduced
+          ? style
+          : { rotateX, rotateY, transformPerspective: 900, ...style }
+      }
+      className={`relative ${className ?? ""}`}
     >
       {children}
-      <span aria-hidden="true" className="tilt-sheen" />
-    </div>
+      <motion.span
+        aria-hidden="true"
+        style={reduced ? undefined : { background: sheen }}
+        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      />
+    </motion.div>
   );
 }

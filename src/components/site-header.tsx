@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
+import { EASE } from "@/components/motion/springs";
 import { navLinks, site } from "@/content/site";
 
 /* TODO: swap the initials mark for the foundation's logo once supplied. */
@@ -142,40 +144,72 @@ export function SiteHeader() {
         </div>
       </Container>
 
-        {/* Stays mounted and collapses to zero rows, which is how an
-            auto-height transition is done in CSS. `inert` takes the links
-            out of the tab order and the accessibility tree while closed, so
-            keeping them in the DOM costs nothing. */}
-        <div
-          id="mobile-menu"
-          data-open={open}
-          inert={!open}
-          className="menu-collapse border-t border-white/8 bg-surface-950 lg:hidden"
-        >
-          <div className="overflow-hidden">
-            <Container className="py-7">
-              <nav aria-label="Mobile" className="flex flex-col">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-accent-300"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <Link
-                  href="/#give"
-                  onClick={() => setOpen(false)}
-                  className="mt-7 inline-flex items-center justify-center rounded-full bg-accent-500 px-6 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-surface-950 uppercase"
+        {/* `height: auto` is not animatable in CSS, which is why this was a
+            grid-rows trick. Framer measures the content and animates to the
+            resolved pixel height, so the panel can simply unmount when
+            closed — no `inert`, and nothing left in the accessibility tree
+            pretending not to be there. */}
+        <AnimatePresence initial={false}>
+          {open ? (
+            <motion.div
+              id="mobile-menu"
+              key="mobile-menu"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.38, ease: EASE }}
+              className="overflow-hidden border-t border-white/8 bg-surface-950 lg:hidden"
+            >
+              <Container className="py-7">
+                <motion.nav
+                  aria-label="Mobile"
+                  className="flex flex-col"
+                  variants={{
+                    open: { transition: { staggerChildren: 0.06, delayChildren: 0.08 } },
+                    closed: {},
+                  }}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
                 >
-                  Donate
-                </Link>
-              </nav>
-            </Container>
-          </div>
-        </div>
+                  {navLinks.map((link) => (
+                    <motion.div
+                      key={link.href}
+                      variants={{
+                        closed: { opacity: 0, x: -14 },
+                        open: { opacity: 1, x: 0 },
+                      }}
+                      transition={{ duration: 0.35, ease: EASE }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={() => setOpen(false)}
+                        className="block border-b border-white/6 py-4 font-display text-xl text-white transition-colors hover:text-accent-300"
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
+                  ))}
+                  <motion.div
+                    variants={{
+                      closed: { opacity: 0, y: 10 },
+                      open: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                  >
+                    <Link
+                      href="/#give"
+                      onClick={() => setOpen(false)}
+                      className="mt-7 inline-flex items-center justify-center rounded-full bg-accent-500 px-6 py-3.5 font-mono text-[0.72rem] font-semibold tracking-[0.16em] text-surface-950 uppercase"
+                    >
+                      Donate
+                    </Link>
+                  </motion.div>
+                </motion.nav>
+              </Container>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </header>
     </>
   );
