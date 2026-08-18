@@ -28,13 +28,13 @@ export default function StoryPage() {
         <section className="grain relative flex min-h-[62svh] items-end overflow-hidden bg-ink-950 pt-24 pb-16 lg:min-h-[70svh]">
           <div aria-hidden="true" className="absolute inset-0">
             <Image
-              src={photos.streetCelebration.src}
+              src={photos.pageant.src}
               alt=""
               fill
               preload
               quality={40}
               sizes="100vw"
-              className="object-cover object-[center_35%] opacity-40"
+              className="object-contain object-[center_35%] opacity-40"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/80 to-ink-950/50" />
           </div>

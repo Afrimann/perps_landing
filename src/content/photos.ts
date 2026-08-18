@@ -43,6 +43,14 @@ export const photos = {
     strand: "relief",
     lead: true,
   },
+  pageant: {
+    src: "/photos/pageant-contestant.jpeg",
+    alt: "A young woman in traditional dress and beads, carrying a woven basket, being interviewed on a handheld microphone by a man in a white shirt, with prize boxes beside them.",
+    width: 485,
+    height: 640,
+    strand: "schools",
+    lead: true,
+  },
   marketHandover: {
     src: "/photos/market-handover.jpg",
     alt: "A volunteer in a Yonwuren Naj Foundation shirt handing a wrapped parcel to a woman in a busy market.",
@@ -137,6 +145,21 @@ export const photos = {
     width: 1280,
     height: 854,
     strand: "relief",
+  },
+  founder: {
+    src: "/photos/founder.jpeg",
+    alt: "Portrait of Naj Yonwuren, founder of the Yonwuren Naj Foundation.",
+    width: 1034,
+    height: 1280,
+    strand: "team",
+  },
+  teamBillboard: {
+    src: "/photos/team-billboard.jpeg",
+    alt: "Five women in Yonwuren Naj Foundation t-shirts standing together in tall grass in front of a billboard advertising the 6 Secondary Schools Competition.",
+    width: 960,
+    height: 1280,
+    strand: "team",
+    lead: true,
   },
   teamPitch: {
     src: "/photos/team-pitch.jpg",

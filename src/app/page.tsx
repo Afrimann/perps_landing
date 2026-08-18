@@ -4,6 +4,7 @@ import { ScrollRail } from "@/components/motion/scroll-rail";
 import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Story } from "@/components/sections/story";
+import { Team } from "@/components/sections/team";
 import { Pillars } from "@/components/sections/pillars";
 import { Impact } from "@/components/sections/impact";
 import { Gallery } from "@/components/sections/gallery";
@@ -29,6 +30,7 @@ export default function Home() {
         <Hero />
         <About />
         <Story />
+        <Team />
         <Pillars />
         <Impact />
         <Gallery />

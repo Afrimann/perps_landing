@@ -28,6 +28,11 @@ const SELECTOR = "[data-reveal],[data-reveal-line],[data-draw]";
  */
 export function RevealObserver() {
   useEffect(() => {
+    /* Tells the inline gate in layout.tsx that the runtime came up, so its
+       failsafe timeout leaves `.reveal-ready` in place. Set first: if
+       anything below throws, the page is better off unhidden. */
+    document.documentElement.setAttribute("data-reveal-active", "");
+
     let pending: Element[] = [];
     let frame = 0;
 
