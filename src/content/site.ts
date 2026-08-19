@@ -69,19 +69,8 @@ export const bankDetails = {
   bank: "Fidelity Bank",
 } as const;
 
-/**
- * Registration and governance evidence.
- *
- * ⚠️  PROVISIONAL — the foundation supplied `1468890` and has stated it will
- *     be corrected once the confirmed CAC number is to hand. This renders a
- *     live credential in three places (About, Governance, footer). To pull it
- *     back to the honest "pending" state, set `cacNumber` to `null` — nothing
- *     else needs changing.
- */
-export const registration = {
-  cacNumber: "1468890" as string | null,
-  registeredName: "Princess Naj Yonwuren Foundation",
-} as const;
+/* No registration export by design: the site makes no claim about registered
+   status anywhere. Do not reintroduce one without a confirmed number. */
 
 /* Offices — DRAFT: no address supplied yet. Empty renders nothing. */
 export const offices: { city: string; address: string }[] = [];
@@ -151,11 +140,12 @@ export const give = {
   body: "Every contribution is received into the foundation's account below. Share your transfer reference with us and we will confirm exactly where your gift went.",
 } as const;
 
-/* DRAFT */
+/* DRAFT — makes no claim about registration status. See the note above the
+   `offices` export for why. */
 export const governance = {
   eyebrow: "Transparency",
   heading: "Governance & Accountability",
-  body: "Yonwuren Naj Foundation is a registered Nigerian foundation. Every programme it runs is written up and published on this site with the year it ran, where it ran and who it reached — so that its record can be checked rather than taken on trust.",
+  body: "Every programme the foundation runs is written up and published on this site with the year it ran, where it ran and who it reached — and every gift is received into a single named account whose details are printed in full. The record is meant to be checked rather than taken on trust.",
 } as const;
 
 export const contactSection = {

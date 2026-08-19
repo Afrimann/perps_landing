@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { StaggerGroup, StaggerItem } from "@/components/motion/primitives";
-import { governance, registration } from "@/content/site";
+import { bankDetails, governance } from "@/content/site";
 import { activities } from "@/content/activities";
 
 /**
@@ -9,28 +9,23 @@ import { activities } from "@/content/activities";
  * the page. No tilt, no sheen, no counters. Precision reads as trustworthy;
  * theatrics here would read as compensation.
  *
- * Every card states something that can be checked. A card whose underlying
- * fact does not yet exist is omitted rather than filled with "coming soon" —
- * a grid of placeholders reads worse to a diligence reviewer than a shorter
- * grid of real ones.
+ * Every card states something a reader can check for themselves on this very
+ * page. Nothing here asserts a credential — no registration number, no
+ * registered status — because none has been confirmed, and a governance
+ * panel is the single worst place on a site to overstate one.
  */
 const records = [
   {
-    title: "CAC Registration",
-    value: registration.cacNumber
-      ? `CAC: ${registration.cacNumber}`
-      : "Pending publication",
-    ready: Boolean(registration.cacNumber),
-  },
-  {
-    title: "Registered Name",
-    value: registration.registeredName,
-    ready: true,
-  },
-  {
     title: "Published Activity Reports",
     value: `${activities.length} programmes documented`,
-    ready: true,
+  },
+  {
+    title: "Every Report Dated",
+    value: "Year and location on each",
+  },
+  {
+    title: "One Named Account",
+    value: `${bankDetails.bank}, published in full`,
   },
 ];
 
@@ -50,13 +45,7 @@ export function Governance() {
           {records.map((record) => (
             <StaggerItem key={record.title} as="li">
               <div className="flex h-full flex-col items-center rounded-2xl border border-stone-300/70 bg-white px-7 py-10 text-center">
-                <span
-                  className={`grid size-11 place-items-center rounded-xl ${
-                    record.ready
-                      ? "bg-accent-200/40 text-accent-600"
-                      : "bg-stone-100 text-stone-400"
-                  }`}
-                >
+                <span className="grid size-11 place-items-center rounded-xl bg-accent-200/40 text-accent-600">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -75,13 +64,7 @@ export function Governance() {
                 <h3 className="mt-6 font-display text-lg text-stone-900">
                   {record.title}
                 </h3>
-                <p
-                  className={`mt-2 text-sm ${
-                    record.ready
-                      ? "font-mono text-stone-700"
-                      : "text-stone-400 italic"
-                  }`}
-                >
+                <p className="mt-2 font-mono text-sm text-stone-700">
                   {record.value}
                 </p>
               </div>

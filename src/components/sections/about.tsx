@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/motion/primitives";
-import { about, registration } from "@/content/site";
+import { about } from "@/content/site";
 
 export function About() {
   return (
@@ -64,35 +64,6 @@ export function About() {
           </Reveal>
         </div>
 
-        {/* Registration badge. Renders only once a real CAC number exists —
-            an unverifiable credential is worse than none. */}
-        <Reveal delay={0.1}>
-          <div className="mt-12 flex justify-center">
-            {registration.cacNumber ? (
-              <p className="inline-flex items-center gap-3 rounded-full border border-accent-500/40 bg-accent-200/25 px-6 py-3 text-sm text-stone-700">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  className="size-4 text-accent-600"
-                  aria-hidden="true"
-                >
-                  <path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z" />
-                  <path d="M9.5 12l1.8 1.8L15 10" />
-                </svg>
-                Registered with the Corporate Affairs Commission —{" "}
-                <span className="font-mono font-semibold text-stone-900">
-                  CAC: {registration.cacNumber}
-                </span>
-              </p>
-            ) : (
-              <p className="inline-flex items-center gap-3 rounded-full border border-dashed border-stone-300 px-6 py-3 text-sm text-stone-500">
-                Registration details to be published once confirmed
-              </p>
-            )}
-          </div>
-        </Reveal>
       </Container>
     </section>
   );
