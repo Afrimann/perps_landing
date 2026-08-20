@@ -5,7 +5,6 @@ import {
   contact,
   navLinks,
   offices,
-  registration,
   site,
   whatsappHref,
 } from "@/content/site";
@@ -150,15 +149,10 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/8 pt-8 text-xs text-stone-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 border-t border-white/8 pt-8 text-xs text-stone-500">
           <p>
             © {year} {site.name}. All rights reserved.
           </p>
-          {registration.cacNumber ? (
-            <p className="font-mono tracking-wide">
-              CAC: {registration.cacNumber}
-            </p>
-          ) : null}
         </div>
       </Container>
     </footer>
